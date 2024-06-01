@@ -1,0 +1,357 @@
+openapi: 3.0.3
+info:
+  title: Backend Service for UKRIDA Portal System
+  description: |-
+    Backend Service with Flask and MongoDB
+  contact:
+    email: hendrik.tampubolon@ukrida.ac.id
+  version: 1.0.11
+servers:
+  - url: "{protocol}://{serverip}:{port}/api/v1"
+    variables:
+      protocol:
+        enum:
+          - http
+          - https
+        default: https
+      serverip:
+        default: 0.0.0.0
+        description: server IP
+      port:
+        default: "5000"
+        description: assigned port
+
+tags:
+  - name: User
+    description: Endpoint for managing user
+  - name: Courses
+    description: Endpoint for managing courses
+
+paths:
+  /user:
+    post:
+      tags:
+        - User
+      summary: Register User
+      description: |
+        Create user endpoint
+        ```
+        curl --location --request POST '`${url}`/api/v1/user' \
+            --header 'Content-Type: application/json' \
+            --data-raw '{
+                "username": "api_user",
+                "password": "siwp2005"
+            }'
+        ```
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+      responses:
+        "200":
+          description: "Success response"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  username:
+                    type: string
+                  id:
+                    type: string
+        "default":
+          description: |
+            ```
+            400 - Bad Request
+            401 - Unauthorized
+            403 - Forbidden
+            404 - Not Found
+            422 - Unprocessable Entity
+            500 - Error on server
+            ```
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    description: "error description"
+                    example: "Server Error"
+  /login:
+    post:
+      tags:
+        - User
+      summary: Login Endpoint
+      description: |
+        login endpoint
+        ```
+        curl --location --request POST '`${url}`/api/v1/login' \
+            --header 'Content-Type: application/json' \
+            --data-raw '{
+                "username": "api_user",
+                "password": "siwp2005"
+            }'
+        ```
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+      responses:
+        "200":
+          description: "Success response"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+        "default":
+          description: |
+            ```
+            400 - Bad Request
+            401 - Unauthorized
+            403 - Forbidden
+            404 - Not Found
+            422 - Unprocessable Entity
+            500 - Error on server
+            ```
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    description: "error description"
+                    example: "Server Error"
+  /courses:
+    post:
+      tags:
+        - Courses
+      summary: Add Course
+      security:
+        - BearerAuth: []
+      description: |
+        Create new course
+        ```
+        curl --location --request POST '`${url}`/api/v1/courses' \
+            --header 'Content-Type: application/json' \
+            --header 'Authorization: Bearer {TOKEN} \
+            --data-raw '{
+                "kode_mk": "SIWP2005",
+                "semester": "2",
+                "nama_mk": "OOP",
+                "sks": "6",
+                "description": "OOP course"
+            }'
+        ```
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CoursePostRequestBody"
+
+      responses:
+        "200":
+          description: "Success response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CourseObject"
+
+        "default":
+          description: |
+            ```
+            400 - Bad Request
+            401 - Unauthorized
+            403 - Forbidden
+            404 - Not Found
+            422 - Unprocessable Entity
+            500 - Error on server
+            ```
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    description: "error description"
+                    example: "Server Error"
+    get:
+      tags:
+        - Courses
+      summary: Get All Courses
+      security:
+        - BearerAuth: []
+      description: |
+        Get courses resource
+        ```
+        curl --location --request GET '`${url}`/api/v1/courses' \
+            --header 'Content-Type: application/json' \
+            --header 'Authorization: Bearer {TOKEN} \
+        ```
+      responses:
+        "200":
+          description: "Success response"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/CourseObject"
+        "default":
+          description: |
+            ```
+            400 - Bad Request
+            401 - Unauthorized
+            403 - Forbidden
+            404 - Not Found
+            422 - Unprocessable Entity
+            500 - Error on server
+            ```
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    description: "error description"
+                    example: "Server Error"
+
+  /courses/{course_id}:
+    parameters:
+      - name: course_id
+        in: path
+        required: true
+        schema:
+          type: string
+
+    get:
+      tags:
+        - Courses
+      summary: Get course by course ID
+      security:
+        - BearerAuth: []
+      description: |
+        Get course resource
+        ```
+        curl --location --request GET '`${url}`/api/v1/courses/{course_id}' \
+            --header 'Content-Type: application/json' \
+            --header 'Authorization: Bearer {TOKEN} \
+        ```
+      responses:
+        "200":
+          description: "Success response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CourseObject"
+
+        "default":
+          description: |
+            ```
+            400 - Bad Request
+            401 - Unauthorized
+            403 - Forbidden
+            404 - Not Found
+            422 - Unprocessable Entity
+            500 - Error on server
+            ```
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    description: "error description"
+                    example: "Server Error"
+
+components:
+  schemas:
+    CourseObject:
+      type: object
+      required:
+        - kode_mk
+        - nama_mk
+        - semester
+        - sks
+      properties:
+        id:
+          description: course id
+          type: string
+        kode_mk:
+          description: course code
+          type: string
+        nama_mk:
+          description: course name
+          type: string
+        semester:
+          description: course semester
+          type: string
+        sks:
+          description: course sks
+          type: number
+        description:
+          description: course description
+          type: string
+
+        user:
+          description: user own the resource
+          type: object
+          properties:
+            id:
+              description: user ID
+              type: string
+            name:
+              description: user name
+              type: string
+
+    CoursePostRequestBody:
+      type: object
+      required:
+        - kode_mk
+        - nama_mk
+        - semester
+        - sks
+      properties:
+        kode_mk:
+          description: course code
+          type: string
+        nama_mk:
+          description: course name
+          type: string
+        semester:
+          description: course semester
+          type: string
+        sks:
+          description: course sks
+          type: number
+        description:
+          description: course description
+          type: string
+
+  securitySchemes:
+    BearerAuth: # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
