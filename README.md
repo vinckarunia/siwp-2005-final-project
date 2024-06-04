@@ -34,7 +34,7 @@
     ```
     wsl --set-default-version 2
     ```
-- ![image](https://hackmd.io/_uploads/SyeviHsVR.png)
+![image](https://hackmd.io/_uploads/SyeviHsVR.png)
 
 
 ### Using Ubuntu on WSL 2
