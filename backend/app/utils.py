@@ -2,7 +2,6 @@ from flask_mongoengine import MongoEngine
 from flask_marshmallow import Marshmallow
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager
-
 import redis
 
 db = MongoEngine()

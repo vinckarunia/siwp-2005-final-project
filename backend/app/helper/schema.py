@@ -18,12 +18,28 @@ class UserSchema(ma.Schema):
         if not isinstance(data["username"], str):
             raise ValidationError("Username must be a string")
         
-
     class Meta:
         ordered = True
 
 class LoginSchema(ma.Schema):
     username = fields.String(required=True)
     password = fields.String(required=True)
+
+class RegisterSchema(ma.Schema):
+    username = fields.String(required=True)
+    password = fields.String(required=True, validate=validate.Length(min=6, max=64))
+    userlevel = fields.Integer(default=0)
+    description = fields.String()
+
+
+class CourseSchema(ma.Schema):
+    id = fields.String(dump_only=True)
+    kode_mk = fields.String(required=True)
+    semester = fields.String(required=True)
+    nama_mk = fields.String(required=False)
+    sks = fields.Integer(required=False)
+    description = fields.String(required=False)
+    user = fields.Nested(UserSchema, required=True, dump_only=True)
     
 
+#TODO: add any schema here
