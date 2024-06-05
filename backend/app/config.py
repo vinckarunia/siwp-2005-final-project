@@ -44,3 +44,6 @@ LOG_CONFIG = {
     },
     "root": {"level": "INFO", "handlers": ["wsgi"]},
 }
+
+USERNAME_ADMIN=os.environ.get("USERNAME_ADMIN", "admin")
+PASSWORD_ADMIN=os.environ.get("PASSWORD_ADMIN", "admin")

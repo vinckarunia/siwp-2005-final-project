@@ -46,6 +46,9 @@ services:
         timezone: Asia/Singapore
     depends_on:
       - mongodb
+    restart: always
+    env_file:
+      - .env
     environment:
       - DEBUG=true # Disable this env to start with non-debug service
       - SECRET_KEY=Mud9RRkWVvz2DHus95gaqdt_bbDSrFvaUgT57xISWFE
@@ -54,8 +57,8 @@ services:
       - MONGODB_DATABASE=siwp2005_final_project_db
       - MONGODB_USERNAME=siwp2005_admin
       - MONGODB_PASSWORD=siwp2005-password
-      - USERNAME_ADMIN={{USERNAME_ADMIN}}
-      - PASSWORD_ADMIN={{PASSWORD_ADMIN}}
+      - USERNAME_ADMIN=${USERNAME_ADMIN}
+      - PASSWORD_ADMIN=${PASSWORD_ADMIN}
     ports:
       - 5001:5000
     volumes:
