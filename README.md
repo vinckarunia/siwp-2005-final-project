@@ -1,6 +1,53 @@
 # siwp2005-final-project
 
 
+### Quick start
+
+- To start and build the development flask backend:
+```
+docker compose -f docker-compose.yaml up --build -d
+```
+Note: `docker compose` command is used in `Compose V2`. Supoosedly your version is `Compose V1` replace `docker compose` with `docker-compose`
+
+After successful run the dev server, you will be able to see all containers are running 
+```shell
+docker ps
+```
+check specific container
+```shell
+docker ps --filter name="name of the container" 
+```
+- To stop service
+```
+docker compose -f docker-compose.yaml down
+```
+*specify `-v` to remove the mongodb volume*
+
+- To remove all container
+```
+docker system prune
+```
+
+### Tech stack
+- Flask
+- MongoDB
+- Docker  
+
+References
+* flask_mongoengine -> MongoDB connector ([docs](https://docs.mongoengine.org/# "docs"))
+  * flask_jwt_extended -> JWT Token
+- MongoDB ([docs](https://github.com/docker-library/docs/tree/master/mongo "docs"))
+
+- Marshmallow -> Schema Validator ([docs](https://marshmallow.readthedocs.io/en/stable/index.html "docs"))
+- Docker
+
+
+### Debugging
+Debug via docker logs
+```shell
+docker logs 'container name'
+```
+
 # Installation
 ## Install Dokcer and Docker Compose
 
