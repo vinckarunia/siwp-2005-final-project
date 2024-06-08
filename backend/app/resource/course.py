@@ -7,8 +7,8 @@ from mongoengine.errors import NotUniqueError
 from werkzeug.exceptions import UnprocessableEntity, Conflict
 
 import helper.validator as validator
-from model.course import Course, User
-from helper.schema import CourseSchema
+from model.course import Course, User, Bulletin
+from helper.schema import CourseSchema, BulletinSchema
 
 class CourseListAPI(Resource):
     @jwt_required()
@@ -51,6 +51,23 @@ class CourseAPI(Resource):
         msg={"message": "Course: {} deleted".format(course_id)}
         return msg, 200
     
+class BulletinListAPI(Resource):
+    @jwt_required()
+    def get(self):
+        bulletin = Bulletin.objects()
+        serialized_payload = BulletinSchema(many=True).dump(bulletin)
+        return serialized_payload, 200
+
+class BulletinAPI(Resource):
+    @jwt_required()
+    def get(self, bulletin_id):
+        app.logger.info("bulletin id: {}".format(bulletin_id))
+        bulletin = Bulletin.objects.get(id=bulletin_id)
+        serialized_payload = BulletinSchema().dump(bulletin)
+        return serialized_payload, 200
+    #TODO:
+    # CRUD
+
 
         
 

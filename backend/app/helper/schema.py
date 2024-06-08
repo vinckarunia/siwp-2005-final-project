@@ -43,3 +43,11 @@ class CourseSchema(ma.Schema):
     
 
 #TODO: add any schema here
+
+class BulletinSchema(ma.Schema):
+    id = fields.String(dump_only=True)
+    name = fields.String(required=True)
+    content = fields.String(required=False)
+    # course = fields.Nested(Course, dump_only=True)
+
+

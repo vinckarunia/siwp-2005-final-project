@@ -9,3 +9,7 @@ class Course(db.Document):
     sks = db.IntField(required=False)
     description = db.StringField(required=False)
     
+class Bulletin(db.Document):
+    name = db.StringField(required=True)
+    content =  db.StringField(required=False)
+    # course = db.ReferenceField(Course)
