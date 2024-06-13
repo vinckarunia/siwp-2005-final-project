@@ -286,6 +286,97 @@ paths:
                     description: "error description"
                     example: "Server Error"
 
+    delete:
+      tags:
+        - Courses
+      summary: Delete Course By ID
+      security:
+        - BearerAuth: []
+      description: |
+        Delete Courses resource by ID
+        ```
+        curl --location --request DELETE '`${url}`/api/v1/courses/{course_id}' \
+            --header 'Content-Type: application/json' \
+            --header 'Authorization: Bearer {TOKEN} \
+        ```
+      responses:
+        "200":
+          description: Course successfully deleted
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Success
+
+        "default":
+          description: |
+            ```
+            400 - Bad Request
+            401 - Unauthorized
+            403 - Forbidden
+            404 - Not Found
+            422 - Unprocessable Entity
+            500 - Error on server
+            ```
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                message: Resource not exist
+    put:
+      tags:
+        - Courses
+      summary: "Edit Course"
+      security:
+        - BearerAuth: []
+      description: |
+        Edit the details of Course
+        ```
+        curl --location --request PUT '`${url}`/api/v1/courses/{course_id}' \
+            --header 'Content-Type: application/json' \
+            --header 'Authorization: Bearer {TOKEN} \
+            --data-raw '{
+                "kode_mk":"string",
+                "nama_mk":"string" ,
+                "semester": "string",
+                "sks": 0,
+                "description": "string"
+            }'
+        ```
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CoursePostRequestBody"
+
+      responses:
+        "200":
+          description: "Edit Courses Success response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CourseObject"
+
+        "default":
+          description: |
+            ```
+            400 - Bad Request
+            401 - Unauthorized
+            403 - Forbidden
+            404 - Not Found
+            422 - Unprocessable Entity
+            500 - Error on server
+            ```
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    description: "error description"
+                    example: "Server Error"
 components:
   schemas:
     CourseObject:
