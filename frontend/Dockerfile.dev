@@ -1,0 +1,6 @@
+# Dockerfile
+FROM node:18.12.1-alpine AS build
+WORKDIR /test
+RUN apk update && apk upgrade
+COPY . /test
+RUN npm install
