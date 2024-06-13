@@ -76,7 +76,7 @@ services:
   frontend:
     build:
       context: ./frontend
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile
       args:
         timezone: Asia/Singapore
     depends_on:
@@ -88,7 +88,7 @@ services:
       - 3003:3000
     networks:
       - siwp2005-service-net
-    command: "npm run serve"
+    command: "npm run dev"
   
 
 volumes:
