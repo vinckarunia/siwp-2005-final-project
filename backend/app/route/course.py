@@ -14,10 +14,10 @@ course_blueprint_api.add_resource(
 )
 
 course_blueprint_api.add_resource(
-    BulletinListAPI, "/bulletin"
+    BulletinListAPI, "/bulletins"
 )
 
 course_blueprint_api.add_resource(
-    BulletinAPI, "/bulletin/<string:bulletin_id>"
+    BulletinAPI, "/bulletins/<string:bulletin_id>"
 )
 

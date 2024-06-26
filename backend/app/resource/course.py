@@ -54,8 +54,16 @@ class CourseAPI(Resource):
 class BulletinListAPI(Resource):
     @jwt_required()
     def get(self):
-        bulletin = Bulletin.objects()
-        serialized_payload = BulletinSchema(many=True).dump(bulletin)
+        bulletins = Bulletin.objects()
+        serialized_payload = BulletinSchema(many=True).dump(bulletins)
+        return serialized_payload, 200
+    
+    @jwt_required()
+    def post(self):
+        serialized_payload = validator.add_bulletin()
+        bulletin = Bulletin(**serialized_payload)
+        bulletin.save()
+        serialized_payload = BulletinSchema().dump(bulletin)
         return serialized_payload, 200
 
 class BulletinAPI(Resource):
@@ -65,6 +73,25 @@ class BulletinAPI(Resource):
         bulletin = Bulletin.objects.get(id=bulletin_id)
         serialized_payload = BulletinSchema().dump(bulletin)
         return serialized_payload, 200
+    
+    @jwt_required()
+    def put(self, bulletin_id):
+        bulletin = Bulletin.objects.get(id=bulletin_id)
+        user = User.objects.get(id=get_jwt_identity())
+        serialized_payload = validator.add_bulletin()
+        for key, value in serialized_payload.items():
+            setattr(bulletin, key, value)
+        bulletin.save()
+        serialized_payload = BulletinSchema().dump(bulletin)
+        return serialized_payload, 200
+    
+    @jwt_required()
+    def delete(self, bulletin_id):        
+        bulletin = Bulletin.objects.get(id=bulletin_id)
+        bulletin.delete()
+        app.logger.info("Bulletin with id %s deleted", bulletin_id)
+        msg={"message": "Bulletin: {} deleted".format(bulletin_id)}
+        return msg, 200
     #TODO:
     # CRUD
 

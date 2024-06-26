@@ -46,8 +46,11 @@ class CourseSchema(ma.Schema):
 
 class BulletinSchema(ma.Schema):
     id = fields.String(dump_only=True)
-    name = fields.String(required=True)
+    title = fields.String(required=True)
     content = fields.String(required=False)
+    author = fields.String(required=True)
+    date = fields.Date(required=False)
+    user = fields.Nested(UserSchema, required=True, dump_only=True)
     # course = fields.Nested(Course, dump_only=True)
 
 

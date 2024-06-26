@@ -23,7 +23,7 @@ def add_course() -> dict:
     except NotUniqueError:
         abort(400, {'error': 'kode_mk already exists, please try another kode_mk'})
        
-def bulletin_validator() -> dict:
+def add_bulletin() -> dict:
     '''
     validation for bulletin seriliarized
     '''

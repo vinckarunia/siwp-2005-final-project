@@ -10,6 +10,9 @@ class Course(db.Document):
     description = db.StringField(required=False)
     
 class Bulletin(db.Document):
-    name = db.StringField(required=True)
+    user = db.ReferenceField(User)
+    title = db.StringField(required=True)
     content =  db.StringField(required=False)
+    author = db.StringField(required=True)
+    date = db.DateField(required=False)
     # course = db.ReferenceField(Course)
