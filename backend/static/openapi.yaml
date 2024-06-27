@@ -1,8 +1,7 @@
 openapi: 3.0.3
 info:
   title: Backend Service for UKRIDA Portal System
-  description: |-
-    Backend Service with Flask and MongoDB
+  description: Backend Service with Flask and MongoDB
   contact:
     email: hendrik.tampubolon@ukrida.ac.id
   version: 1.0.11
@@ -26,6 +25,8 @@ tags:
     description: Endpoint for managing user
   - name: Courses
     description: Endpoint for managing courses
+  - name: Billings 
+    description: Endpoint for managing billings
 
 paths:
   /user:
@@ -84,6 +85,7 @@ paths:
                     type: string
                     description: "error description"
                     example: "Server Error"
+
   /login:
     post:
       tags:
@@ -138,6 +140,7 @@ paths:
                     type: string
                     description: "error description"
                     example: "Server Error"
+
   /courses:
     post:
       tags:
@@ -150,7 +153,7 @@ paths:
         ```
         curl --location --request POST '`${url}`/api/v1/courses' \
             --header 'Content-Type: application/json' \
-            --header 'Authorization: Bearer {TOKEN} \
+            --header 'Authorization: Bearer {TOKEN}' \
             --data-raw '{
                 "kode_mk": "SIWP2005",
                 "semester": "2",
@@ -164,7 +167,6 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/CoursePostRequestBody"
-
       responses:
         "200":
           description: "Success response"
@@ -172,7 +174,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/CourseObject"
-
         "default":
           description: |
             ```
@@ -192,6 +193,7 @@ paths:
                     type: string
                     description: "error description"
                     example: "Server Error"
+
     get:
       tags:
         - Courses
@@ -203,7 +205,7 @@ paths:
         ```
         curl --location --request GET '`${url}`/api/v1/courses' \
             --header 'Content-Type: application/json' \
-            --header 'Authorization: Bearer {TOKEN} \
+            --header 'Authorization: Bearer {TOKEN}' \
         ```
       responses:
         "200":
@@ -244,7 +246,6 @@ paths:
         required: true
         schema:
           type: string
-
     get:
       tags:
         - Courses
@@ -256,7 +257,7 @@ paths:
         ```
         curl --location --request GET '`${url}`/api/v1/courses/{course_id}' \
             --header 'Content-Type: application/json' \
-            --header 'Authorization: Bearer {TOKEN} \
+            --header 'Authorization: Bearer {TOKEN}' \
         ```
       responses:
         "200":
@@ -265,7 +266,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/CourseObject"
-
         "default":
           description: |
             ```
@@ -297,7 +297,7 @@ paths:
         ```
         curl --location --request DELETE '`${url}`/api/v1/courses/{course_id}' \
             --header 'Content-Type: application/json' \
-            --header 'Authorization: Bearer {TOKEN} \
+            --header 'Authorization: Bearer {TOKEN}' \
         ```
       responses:
         "200":
@@ -307,7 +307,6 @@ paths:
               schema:
                 type: string
                 example: Success
-
         "default":
           description: |
             ```
@@ -324,10 +323,11 @@ paths:
                 type: object
               example:
                 message: Resource not exist
+
     put:
       tags:
         - Courses
-      summary: "Edit Course"
+      summary: Edit Course
       security:
         - BearerAuth: []
       description: |
@@ -335,7 +335,7 @@ paths:
         ```
         curl --location --request PUT '`${url}`/api/v1/courses/{course_id}' \
             --header 'Content-Type: application/json' \
-            --header 'Authorization: Bearer {TOKEN} \
+            --header 'Authorization: Bearer {TOKEN}' \
             --data-raw '{
                 "kode_mk":"string",
                 "nama_mk":"string" ,
@@ -349,7 +349,6 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/CoursePostRequestBody"
-
       responses:
         "200":
           description: "Edit Courses Success response"
@@ -357,7 +356,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/CourseObject"
-
         "default":
           description: |
             ```
@@ -378,23 +376,23 @@ paths:
                     description: "error description"
                     example: "Server Error"
 
-  /bulletins:
+  /billings:
     post:
       tags:
-        - Bulletins
-      summary: Add Bulletin
+        - Billings
+      summary: Add Billings
       security:
         - BearerAuth: []
       description: |
-        Create a new bulletin
+        Create a new billing
         ```
-        curl --location --request POST '`${url}`/api/v1/bulletins' \
+        curl --location --request POST '`${url}`/api/v1/billings' \
             --header 'Content-Type: application/json' \
             --header 'Authorization: Bearer {TOKEN}' \
             --data-raw '{
-                "title": "Bulletin Title",
-                "content": "Content of the bulletin",
-                "author": "Author Name",
+                "nim": "422023022",
+                "nama": "victorio",
+                "tagihan": "jumlah tagihan",
                 "date": "2024-06-26"
             }'
         ```
@@ -402,16 +400,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/BulletinPostRequestBody"
-
+              $ref: "#/components/schemas/BillingPostRequestBody"
       responses:
         "200":
           description: "Success response"
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/BulletinObject"
-
+                $ref: "#/components/schemas/BillingObject"
         "default":
           description: |
             ```
@@ -431,16 +427,17 @@ paths:
                     type: string
                     description: "error description"
                     example: "Server Error"
+
     get:
       tags:
-        - Bulletins
-      summary: Get All Bulletins
+        - Billings
+      summary: Get All Billings
       security:
         - BearerAuth: []
       description: |
-        Get all bulletins
+        Get all billings
         ```
-        curl --location --request GET '`${url}`/api/v1/bulletins' \
+        curl --location --request GET '`${url}`/api/v1/billings' \
             --header 'Content-Type: application/json' \
             --header 'Authorization: Bearer {TOKEN}' \
         ```
@@ -455,7 +452,7 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: "#/components/schemas/BulletinObject"
+                      $ref: "#/components/schemas/BillingObject"
         "default":
           description: |
             ```
@@ -476,24 +473,23 @@ paths:
                     description: "error description"
                     example: "Server Error"
 
-  /bulletins/{bulletin_id}:
+  /billings/{billing_id}:
     parameters:
-      - name: bulletin_id
+      - name: billing_id
         in: path
         required: true
         schema:
           type: string
-
     get:
       tags:
-        - Bulletins
-      summary: Get Bulletin by ID
+        - Billings
+      summary: Get Billing by ID
       security:
         - BearerAuth: []
       description: |
-        Get a specific bulletin by ID
+        Get a specific billing by ID
         ```
-        curl --location --request GET '`${url}`/api/v1/bulletins/{bulletin_id}' \
+        curl --location --request GET '`${url}`/api/v1/billings/{billing_id}' \
             --header 'Content-Type: application/json' \
             --header 'Authorization: Bearer {TOKEN}' \
         ```
@@ -503,8 +499,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/BulletinObject"
-
+                $ref: "#/components/schemas/BillingObject"
         "default":
           description: |
             ```
@@ -527,26 +522,25 @@ paths:
 
     delete:
       tags:
-        - Bulletins
-      summary: Delete Bulletin by ID
+        - Billings
+      summary: Delete Billing by ID
       security:
         - BearerAuth: []
       description: |
-        Delete a specific bulletin by ID
+        Delete a specific billing by ID
         ```
-        curl --location --request DELETE '`${url}`/api/v1/bulletins/{bulletin_id}' \
+        curl --location --request DELETE '`${url}`/api/v1/billings/{billing_id}' \
             --header 'Content-Type: application/json' \
             --header 'Authorization: Bearer {TOKEN}' \
         ```
       responses:
         "200":
-          description: Bulletin successfully deleted
+          description: Billing successfully deleted
           content:
             text/plain:
               schema:
                 type: string
                 example: Success
-
         "default":
           description: |
             ```
@@ -563,39 +557,38 @@ paths:
                 type: object
               example:
                 message: Resource not exist
+
     put:
       tags:
-        - Bulletins
-      summary: Edit Bulletin
+        - Billings
+      summary: Edit Billing
       security:
         - BearerAuth: []
       description: |
-        Edit the details of a bulletin
+        Edit the details of a billing
         ```
-        curl --location --request PUT '`${url}`/api/v1/bulletins/{bulletin_id}' \
+        curl --location --request PUT '`${url}`/api/v1/billings/{billing_id}' \
             --header 'Content-Type: application/json' \
             --header 'Authorization: Bearer {TOKEN}' \
             --data-raw '{
-                "title": "Updated Title",
-                "content": "Updated content",
-                "author": "Updated Author",
-                "date": "2024-06-27"
+                "nim": " Updated nim",
+                "nama": "Updated nama",
+                "tagihan": "Updated jumlah tagihan",
+                "date": "2024-06-26"
             }'
         ```
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/BulletinPostRequestBody"
-
+              $ref: "#/components/schemas/BillingPostRequestBody"
       responses:
         "200":
-          description: "Edit Bulletin Success response"
+          description: "Edit Billing Success response"
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/BulletinObject"
-
+                $ref: "#/components/schemas/BillingObject"
         "default":
           description: |
             ```
@@ -644,7 +637,6 @@ components:
         description:
           description: course description
           type: string
-
         user:
           description: user own the resource
           type: object
@@ -655,6 +647,7 @@ components:
             name:
               description: user name
               type: string
+
     CoursePostRequestBody:
       type: object
       required:
@@ -678,44 +671,46 @@ components:
         description:
           description: course description
           type: string
-    BulletinPostRequestBody:
+          
+    BillingPostRequestBody:
       type: object
       properties:
-        title:
+        nim:
+          type: integer
+          example: "422023022"
+        nama:
           type: string
-          example: "Bulletin Title"
-        content:
-          type: string
-          example: "Content of the bulletin"
-        author:
-          type: string
-          example: "Author Name"
+          example: "victorio"
+        tagihan:
+          type: integer
+          example: "5000000"
         date:
           type: string
           format: date
           example: "2024-06-26"
-    BulletinObject:
+
+    BillingObject:
       type: object
       properties:
         id:
           type: string
-          example: "1234567890"
-        title:
+          example: "01"
+        nim:
+          type: integer
+          example: "422023022"
+        nama:
           type: string
-          example: "Bulletin Title"
-        content:
-          type: string
-          example: "Content of the bulletin"
-        author:
-          type: string
-          example: "Author Name"
+          example: "victorio"
+        tagihan:
+          type: integer
+          example: "5000000"
         date:
           type: string
           format: date
           example: "2024-06-26"
 
   securitySchemes:
-    BearerAuth: # arbitrary name for the security scheme
+    BearerAuth:
       type: http
       scheme: bearer
       bearerFormat: JWT

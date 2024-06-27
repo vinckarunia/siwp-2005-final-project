@@ -9,10 +9,10 @@ class Course(db.Document):
     sks = db.IntField(required=False)
     description = db.StringField(required=False)
     
-class Bulletin(db.Document):
+class Billing(db.Document):
     user = db.ReferenceField(User)
-    title = db.StringField(required=True)
-    content =  db.StringField(required=False)
-    author = db.StringField(required=True)
+    nim = db.IntField(required=True)
+    nama =  db.StringField(required=True)
+    tagihan = db.IntField(required=True)
     date = db.DateField(required=False)
     # course = db.ReferenceField(Course)

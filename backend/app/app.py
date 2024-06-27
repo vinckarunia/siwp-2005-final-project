@@ -5,7 +5,7 @@ from flask import Flask, abort, current_app
 from flask_cors import CORS
 from utils import db, ma, bcrypt, jwt
 from route.user import authz_blueprint
-from route.course import course_blueprint
+from route.course import course_blueprint , billing_blueprint
 # TODO: add any route here
 # from route.anything import anything_blueprint ##here
 
@@ -34,6 +34,10 @@ def create_app():
     )
     app.register_blueprint(
         course_blueprint,
+        url_prefix=f"/api/{config.CURRENT_VERSION_API}/"
+    )
+    app.register_blueprint(
+        billing_blueprint,
         url_prefix=f"/api/{config.CURRENT_VERSION_API}/"
     )
 

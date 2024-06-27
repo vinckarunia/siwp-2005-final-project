@@ -44,11 +44,11 @@ class CourseSchema(ma.Schema):
 
 #TODO: add any schema here
 
-class BulletinSchema(ma.Schema):
+class BillingSchema(ma.Schema):
     id = fields.String(dump_only=True)
-    title = fields.String(required=True)
-    content = fields.String(required=False)
-    author = fields.String(required=True)
+    nim = fields.Integer(required=True)
+    nama = fields.String(required=True)
+    tagihan = fields.Integer(required=True)
     date = fields.Date(required=False)
     user = fields.Nested(UserSchema, required=True, dump_only=True)
     # course = fields.Nested(Course, dump_only=True)
