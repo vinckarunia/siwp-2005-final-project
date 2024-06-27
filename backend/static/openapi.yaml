@@ -26,6 +26,10 @@ tags:
     description: Endpoint for managing user
   - name: Courses
     description: Endpoint for managing courses
+  - name: Bulletins
+    description: Endpoint for managing bulletins
+  - name: Classes
+    description: Endpoint for managing classes
 
 paths:
   /user:
@@ -138,6 +142,7 @@ paths:
                     type: string
                     description: "error description"
                     example: "Server Error"
+  # courses
   /courses:
     post:
       tags:
@@ -378,6 +383,7 @@ paths:
                     description: "error description"
                     example: "Server Error"
 
+  # bulletins
   /bulletins:
     post:
       tags:
@@ -616,6 +622,249 @@ paths:
                     description: "error description"
                     example: "Server Error"
 
+  # classes
+  /classes:
+      post:
+        tags:
+          - Classes
+        summary: Add Class
+        security:
+          - BearerAuth: []
+        description: |
+          Create a new class
+          ```
+          curl --location --request POST '`${url}`/api/v1/classes' \
+              --header 'Content-Type: application/json' \
+              --header 'Authorization: Bearer {TOKEN}' \
+              --data-raw '{
+                  "course": "Course of the class",
+                  "type": "Type of the class",
+                  "sks": "Total sks",
+                  "date": "2024-06-26",
+                  "room": "Room of the class",
+                  "lecture": "Lecture of the class"
+              }'
+          ```
+        requestBody:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClassesPostRequestBody"
+
+        responses:
+          "200":
+            description: "Success response"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/ClassesObject"
+
+          "default":
+            description: |
+              ```
+              400 - Bad Request
+              401 - Unauthorized
+              403 - Forbidden
+              404 - Not Found
+              422 - Unprocessable Entity
+              500 - Error on server
+              ```
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    detail:
+                      type: string
+                      description: "error description"
+                      example: "Server Error"
+      get:
+        tags:
+          - Classes
+        summary: Get All Classes
+        security:
+          - BearerAuth: []
+        description: |
+          Get all classes
+          ```
+          curl --location --request GET '`${url}`/api/v1/classes' \
+              --header 'Content-Type: application/json' \
+              --header 'Authorization: Bearer {TOKEN}' \
+          ```
+        responses:
+          "200":
+            description: "Success response"
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    data:
+                      type: array
+                      items:
+                        $ref: "#/components/schemas/ClassesObject"
+          "default":
+            description: |
+              ```
+              400 - Bad Request
+              401 - Unauthorized
+              403 - Forbidden
+              404 - Not Found
+              422 - Unprocessable Entity
+              500 - Error on server
+              ```
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    detail:
+                      type: string
+                      description: "error description"
+                      example: "Server Error"
+
+  /classes/{classes_id}:
+      parameters:
+        - name: classes_id
+          in: path
+          required: true
+          schema:
+            type: string
+
+      get:
+        tags:
+          - Classes
+        summary: Get Classes by ID
+        security:
+          - BearerAuth: []
+        description: |
+          Get a specific class by ID
+          ```
+          curl --location --request GET '`${url}`/api/v1/classes/{classes_id}' \
+              --header 'Content-Type: application/json' \
+              --header 'Authorization: Bearer {TOKEN}' \
+          ```
+        responses:
+          "200":
+            description: "Success response"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/ClassesObject"
+
+          "default":
+            description: |
+              ```
+              400 - Bad Request
+              401 - Unauthorized
+              403 - Forbidden
+              404 - Not Found
+              422 - Unprocessable Entity
+              500 - Error on server
+              ```
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    detail:
+                      type: string
+                      description: "error description"
+                      example: "Server Error"
+
+      delete:
+        tags:
+          - Classes
+        summary: Delete Classes by ID
+        security:
+          - BearerAuth: []
+        description: |
+          Delete a specific class by ID
+          ```
+          curl --location --request DELETE '`${url}`/api/v1/classes/{classes_id}' \
+              --header 'Content-Type: application/json' \
+              --header 'Authorization: Bearer {TOKEN}' \
+          ```
+        responses:
+          "200":
+            description: Class successfully deleted
+            content:
+              text/plain:
+                schema:
+                  type: string
+                  example: Success
+
+          "default":
+            description: |
+              ```
+              400 - Bad Request
+              401 - Unauthorized
+              403 - Forbidden
+              404 - Not Found
+              422 - Unprocessable Entity
+              500 - Error on server
+              ```
+            content:
+              application/json:
+                schema:
+                  type: object
+                example:
+                  message: Resource not exist
+      put:
+        tags:
+          - Classes
+        summary: Edit Class
+        security:
+          - BearerAuth: []
+        description: |
+          Edit the details of a class
+          ```
+          curl --location --request PUT '`${url}`/api/v1/classes/{classes_id}' \
+              --header 'Content-Type: application/json' \
+              --header 'Authorization: Bearer {TOKEN}' \
+              --data-raw '{
+                  "course": "Course of the class",
+                  "type": "Type of the class",
+                  "sks": "Total sks",
+                  "date": "2024-06-26",
+                  "room": "Room of the class",
+                  "lecture": "Lecture of the class"
+              }'
+          ```
+        requestBody:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClassesPostRequestBody"
+
+        responses:
+          "200":
+            description: "Edit Class Success response"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/ClassesObject"
+
+          "default":
+            description: |
+              ```
+              400 - Bad Request
+              401 - Unauthorized
+              403 - Forbidden
+              404 - Not Found
+              422 - Unprocessable Entity
+              500 - Error on server
+              ```
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    detail:
+                      type: string
+                      description: "error description"
+                      example: "Server Error"
+
 components:
   schemas:
     CourseObject:
@@ -713,6 +962,59 @@ components:
           type: string
           format: date
           example: "2024-06-26"
+    ClassesPostRequestBody:
+      type: object
+      properties:
+        course:
+          type: string
+          example: "Course of the class"
+        type:
+          type: string
+          example: "Type of the class"
+        sks:
+          type: integer
+          example: "Total sks"
+        date:
+          type: string
+          format: datetime
+          example: "2024-06-27 10:00"
+        room:
+          type: string
+          example: "Room of the class"
+        online_class:
+          type: string
+          example: "Online class link"
+        lecture:
+          type: string
+          example: "Lecture of the class"
+    ClassesObject:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "1234567890"
+        course:
+          type: string
+          example: "Course of the class"
+        type:
+          type: string
+          example: "Type of the class"
+        sks:
+          type: integer
+          example: "Total sks"
+        date:
+          type: string
+          format: datetime
+          example: "2024-06-27 10:00"
+        room:
+          type: string
+          example: "Room of the class"
+        online_class:
+          type: string
+          example: "Online class link"
+        lecture:
+          type: string
+          example: "Lecture of the class"
 
   securitySchemes:
     BearerAuth: # arbitrary name for the security scheme

@@ -53,4 +53,13 @@ class BulletinSchema(ma.Schema):
     user = fields.Nested(UserSchema, required=True, dump_only=True)
     # course = fields.Nested(Course, dump_only=True)
 
-
+class ClassesSchema(ma.Schema):
+    id = fields.String(dump_only=True)
+    course = fields.String(required=True)
+    type = fields.String(required=True)
+    sks = fields.Integer(required=True)
+    date = fields.DateTime(required=True)
+    room = fields.String(required=False)
+    online_class = fields.String(required=False)
+    lecture = fields.String(required=True)
+    user = fields.Nested(UserSchema, required=True, dump_only=True)

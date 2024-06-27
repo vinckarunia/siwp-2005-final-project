@@ -16,3 +16,13 @@ class Bulletin(db.Document):
     author = db.StringField(required=True)
     date = db.DateField(required=False)
     # course = db.ReferenceField(Course)
+
+class Classes(db.Document):
+    user = db.ReferenceField(User)
+    course = db.StringField(required=True)
+    type = db.StringField(required=True)
+    sks = db.IntField(required=True)
+    date = db.DateTimeField(required=True)
+    room = db.StringField(required=False)
+    online_class = db.StringField(required=False)
+    lecture = db.StringField(required=True)

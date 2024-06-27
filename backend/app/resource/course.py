@@ -7,9 +7,10 @@ from mongoengine.errors import NotUniqueError
 from werkzeug.exceptions import UnprocessableEntity, Conflict
 
 import helper.validator as validator
-from model.course import Course, User, Bulletin
-from helper.schema import CourseSchema, BulletinSchema
+from model.course import Course, User, Bulletin, Classes
+from helper.schema import CourseSchema, BulletinSchema, ClassesSchema
 
+# Course
 class CourseListAPI(Resource):
     @jwt_required()
     def get(self):
@@ -50,7 +51,8 @@ class CourseAPI(Resource):
         app.logger.info("Course with id %s deleted", course_id)
         msg={"message": "Course: {} deleted".format(course_id)}
         return msg, 200
-    
+
+# Bulletin 
 class BulletinListAPI(Resource):
     @jwt_required()
     def get(self):
@@ -92,8 +94,49 @@ class BulletinAPI(Resource):
         app.logger.info("Bulletin with id %s deleted", bulletin_id)
         msg={"message": "Bulletin: {} deleted".format(bulletin_id)}
         return msg, 200
-    #TODO:
-    # CRUD
+
+# Class Schedule
+class ClassesListAPI(Resource):
+    @jwt_required()
+    def get(self):
+        classes = Classes.objects()
+        serialized_payload = ClassesSchema(many=True).dump(classes)
+        return serialized_payload, 200
+    
+    @jwt_required()
+    def post(self):
+        serialized_payload = validator.add_classes()
+        classes = Classes(**serialized_payload)
+        classes.save()
+        serialized_payload = ClassesSchema().dump(classes)
+        return serialized_payload, 200
+
+class ClassesAPI(Resource):
+    @jwt_required()
+    def get(self, classes_id):
+        app.logger.info("classes id: {}".format(classes_id))
+        classes = Classes.objects.get(id=classes_id)
+        serialized_payload = ClassesSchema().dump(classes)
+        return serialized_payload, 200
+    
+    @jwt_required()
+    def put(self, classes_id):
+        classes = Classes.objects.get(id=classes_id)
+        user = User.objects.get(id=get_jwt_identity())
+        serialized_payload = validator.add_classes()
+        for key, value in serialized_payload.items():
+            setattr(classes, key, value)
+        classes.save()
+        serialized_payload = ClassesSchema().dump(classes)
+        return serialized_payload, 200
+    
+    @jwt_required()
+    def delete(self, classes_id):        
+        classes = Classes.objects.get(id=classes_id)
+        classes.delete()
+        app.logger.info("Classes with id %s deleted", classes_id)
+        msg={"message": "Classes: {} deleted".format(classes_id)}
+        return msg, 200
 
 
         
