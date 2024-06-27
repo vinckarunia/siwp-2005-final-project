@@ -6,6 +6,12 @@ from resource.course import CourseAPI, CourseListAPI, BulletinAPI, BulletinListA
 course_blueprint = Blueprint("course_api", __name__)
 course_blueprint_api = Api(course_blueprint)
 
+bulletin_blueprint = Blueprint("bulletin_api", __name__)
+bulletin_blueprint_api = Api(bulletin_blueprint)
+
+classes_blueprint = Blueprint("classes_api", __name__)
+classes_blueprint_api = Api(classes_blueprint)
+
 course_blueprint_api.add_resource(
     CourseAPI, "/courses/<string:course_id>"
 )
@@ -13,19 +19,19 @@ course_blueprint_api.add_resource(
     CourseListAPI, "/courses"
 )
 
-course_blueprint_api.add_resource(
+bulletin_blueprint_api.add_resource(
     BulletinListAPI, "/bulletins"
 )
 
-course_blueprint_api.add_resource(
+bulletin_blueprint_api.add_resource(
     BulletinAPI, "/bulletins/<string:bulletin_id>"
 )
 
-course_blueprint_api.add_resource(
+classes_blueprint_api.add_resource(
     ClassesListAPI, "/classes"
 )
 
-course_blueprint_api.add_resource(
+classes_blueprint_api.add_resource(
     ClassesAPI, "/classes/<string:classes_id>"
 )
 
