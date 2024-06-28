@@ -31,7 +31,6 @@ class RegisterSchema(ma.Schema):
     userlevel = fields.Integer(default=0)
     description = fields.String()
 
-
 class CourseSchema(ma.Schema):
     id = fields.String(dump_only=True)
     kode_mk = fields.String(required=True)
@@ -40,17 +39,60 @@ class CourseSchema(ma.Schema):
     sks = fields.Integer(required=False)
     description = fields.String(required=False)
     user = fields.Nested(UserSchema, required=True, dump_only=True)
+
+class InputKRSSchema(ma.Schema):
+    id = fields.String(dump_only=True)
+    course = fields.String(required=True)
+    sks = fields.String(required=True)
+    day = fields.Date(required=False)
+    kelas = fields.String(required=True)
+    type = fields.String(required=True)
+    room = fields.String(required=True)
+    user = fields.Nested(UserSchema, required=True, dump_only=True)
+
+class SoftskillSchema(ma.Schema):
+    id = fields.String(dump_only=True)
+    title = fields.String(required=True)
+    deskripsi = fields.String(required=True)
+    tahun_kegiatan = fields.Date(required=False)
+    file = fields.String(required=True)
+    user = fields.Nested(UserSchema, required=True, dump_only=True)
+
+class BillingSchema(ma.Schema):
+    id = fields.String(dump_only=True)
+    nim = fields.Integer(required=True)
+    nama = fields.String(required=True)
+    tagihan = fields.Integer(required=True)
+    date = fields.Date(required=False)
+    user = fields.Nested(UserSchema, required=True, dump_only=True)
     
+class DashboardSchema(ma.Schema):
+    id = fields.String(dump_only=True)
+    nim = fields.Integer(required=True)
+    nama = fields.String(required=True)
+    IPK = fields.String(required=True)
+    totaltagihan = fields.Integer(required=True)
+    schedule = fields.Date(required=True)
+    user = fields.Nested(UserSchema, required=True, dump_only=True)
 
-#TODO: add any schema here
-
-class BulletinSchema(ma.Schema):
+class NewsSchema(ma.Schema):
     id = fields.String(dump_only=True)
     title = fields.String(required=True)
     content = fields.String(required=False)
-    author = fields.String(required=True)
-    date = fields.Date(required=False)
     user = fields.Nested(UserSchema, required=True, dump_only=True)
-    # course = fields.Nested(Course, dump_only=True)
 
+class ExamSchema(ma.Schema):
+    id = fields.String(dump_only=True)
+    kode_mk = fields.String(required=True)
+    course = fields.String(required=True)
+    date = fields.DateTime(required=True)
+    room = fields.String(required=False)
+    user = fields.Nested(UserSchema, required=True, dump_only=True)
 
+class CampusEventSchema(ma.Schema):
+    id = fields.String(dump_only=True)
+    title = fields.String(required=True)
+    date = fields.String(required=True)
+    time = fields.String(required=True)
+    location = fields.String(required=True)
+    user = fields.Nested(UserSchema, required=True, dump_only=True)

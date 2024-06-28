@@ -84,7 +84,7 @@ class RegisterAPI(Resource):
 
 class UserManagementListAPI(Resource):
     @jwt_required()
-    @user_level_required(USER_LEVELS["super_admin"])  # Only super admin
+    @user_level_required(USER_LEVELS["super_admin"]) 
     def post(self):
         data = request.get_json()
         user = User(**data)
@@ -93,20 +93,20 @@ class UserManagementListAPI(Resource):
         return UserSchema().dump(user), 200
 
     @jwt_required()
-    @user_level_required(USER_LEVELS["super_admin"])  # Only super admin
+    @user_level_required(USER_LEVELS["super_admin"])
     def get(self):
         users = User.objects
         return UserSchema(many=True).dump(users), 200
 
 class UserManagementAPI(Resource):
     @jwt_required()
-    @user_level_required(USER_LEVELS["super_admin"])  # Only super admin
+    @user_level_required(USER_LEVELS["super_admin"])  
     def get(self, user_id):
         user = User.objects.get(id=user_id)
         return UserSchema().dump(user), 200
 
     @jwt_required()
-    @user_level_required(USER_LEVELS["super_admin"])  # Only super admin
+    @user_level_required(USER_LEVELS["super_admin"]) 
     def put(self, user_id):
         data = request.get_json()
         user = User.objects.get(id=user_id)
@@ -114,7 +114,7 @@ class UserManagementAPI(Resource):
         return UserSchema().dump(user), 200
 
     @jwt_required()
-    @user_level_required(USER_LEVELS["super_admin"])  # Only super admin
+    @user_level_required(USER_LEVELS["super_admin"]) 
     def delete(self, user_id):
         user = User.objects.get(id=user_id)
         user.delete()

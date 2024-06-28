@@ -1,8 +1,7 @@
 openapi: 3.0.3
 info:
   title: Backend Service for UKRIDA Portal System
-  description: |-
-    Backend Service with Flask and MongoDB
+  description: Backend Service with Flask and MongoDB
   contact:
     email: hendrik.tampubolon@ukrida.ac.id
   version: 1.0.11
@@ -26,6 +25,16 @@ tags:
     description: Endpoint for managing user
   - name: Courses
     description: Endpoint for managing courses
+  - name: Billings 
+    description: Endpoint for managing billings
+  - name: Dashboard
+    description: Endpoint for managing dashboard
+  - name: News
+    description: Endpoint for managing news
+  - name: Exam
+    description: Endpoint for managing exams
+  - name: CampusEvent
+    description: Endpoint for managing campus events
 
 paths:
   /user:
@@ -84,6 +93,7 @@ paths:
                     type: string
                     description: "error description"
                     example: "Server Error"
+
   /login:
     post:
       tags:
@@ -138,6 +148,7 @@ paths:
                     type: string
                     description: "error description"
                     example: "Server Error"
+
   /courses:
     post:
       tags:
@@ -150,7 +161,7 @@ paths:
         ```
         curl --location --request POST '`${url}`/api/v1/courses' \
             --header 'Content-Type: application/json' \
-            --header 'Authorization: Bearer {TOKEN} \
+            --header 'Authorization: Bearer {TOKEN}' \
             --data-raw '{
                 "kode_mk": "SIWP2005",
                 "semester": "2",
@@ -164,7 +175,6 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/CoursePostRequestBody"
-
       responses:
         "200":
           description: "Success response"
@@ -172,7 +182,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/CourseObject"
-
         "default":
           description: |
             ```
@@ -192,6 +201,7 @@ paths:
                     type: string
                     description: "error description"
                     example: "Server Error"
+
     get:
       tags:
         - Courses
@@ -203,7 +213,7 @@ paths:
         ```
         curl --location --request GET '`${url}`/api/v1/courses' \
             --header 'Content-Type: application/json' \
-            --header 'Authorization: Bearer {TOKEN} \
+            --header 'Authorization: Bearer {TOKEN}' \
         ```
       responses:
         "200":
@@ -244,7 +254,6 @@ paths:
         required: true
         schema:
           type: string
-
     get:
       tags:
         - Courses
@@ -256,7 +265,7 @@ paths:
         ```
         curl --location --request GET '`${url}`/api/v1/courses/{course_id}' \
             --header 'Content-Type: application/json' \
-            --header 'Authorization: Bearer {TOKEN} \
+            --header 'Authorization: Bearer {TOKEN}' \
         ```
       responses:
         "200":
@@ -265,7 +274,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/CourseObject"
-
         "default":
           description: |
             ```
@@ -297,7 +305,7 @@ paths:
         ```
         curl --location --request DELETE '`${url}`/api/v1/courses/{course_id}' \
             --header 'Content-Type: application/json' \
-            --header 'Authorization: Bearer {TOKEN} \
+            --header 'Authorization: Bearer {TOKEN}' \
         ```
       responses:
         "200":
@@ -307,7 +315,6 @@ paths:
               schema:
                 type: string
                 example: Success
-
         "default":
           description: |
             ```
@@ -324,10 +331,11 @@ paths:
                 type: object
               example:
                 message: Resource not exist
+
     put:
       tags:
         - Courses
-      summary: "Edit Course"
+      summary: Edit Course
       security:
         - BearerAuth: []
       description: |
@@ -335,7 +343,7 @@ paths:
         ```
         curl --location --request PUT '`${url}`/api/v1/courses/{course_id}' \
             --header 'Content-Type: application/json' \
-            --header 'Authorization: Bearer {TOKEN} \
+            --header 'Authorization: Bearer {TOKEN}' \
             --data-raw '{
                 "kode_mk":"string",
                 "nama_mk":"string" ,
@@ -349,7 +357,6 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/CoursePostRequestBody"
-
       responses:
         "200":
           description: "Edit Courses Success response"
@@ -357,7 +364,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/CourseObject"
-
         "default":
           description: |
             ```
@@ -378,31 +384,32 @@ paths:
                     description: "error description"
                     example: "Server Error"
 
-  /bulletins:
+  /inputkrs:
     post:
       tags:
-        - Bulletins
-      summary: Add Bulletin
+        - InputKRS
+      summary: Add InputKRS
       security:
         - BearerAuth: []
       description: |
-        Create a new bulletin
+        Create a new inputkrs
         ```
-        curl --location --request POST '`${url}`/api/v1/bulletins' \
+        curl --location --request POST '`${url}`/api/v1/inputkrs' \
             --header 'Content-Type: application/json' \
             --header 'Authorization: Bearer {TOKEN}' \
             --data-raw '{
-                "title": "Bulletin Title",
-                "content": "Content of the bulletin",
-                "author": "Author Name",
-                "date": "2024-06-26"
+                "title": "Updated Title",
+                "penyelenggara": "who",
+                "deskripsi": "deskripsi",
+                "tahun_kegiatan": "2024-06-27"
+                "file": "https"
             }'
         ```
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/BulletinPostRequestBody"
+              $ref: "#/components/schemas/InputKRSPostRequestBody"
 
       responses:
         "200":
@@ -410,7 +417,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/BulletinObject"
+                $ref: "#/components/schemas/InputKRSObject"
 
         "default":
           description: |
@@ -433,14 +440,14 @@ paths:
                     example: "Server Error"
     get:
       tags:
-        - Bulletins
-      summary: Get All Bulletins
+        - InputKRS
+      summary: Get All InputKRS
       security:
         - BearerAuth: []
       description: |
-        Get all bulletins
+        Get all inputkrs
         ```
-        curl --location --request GET '`${url}`/api/v1/bulletins' \
+        curl --location --request GET '`${url}`/api/v1/inputkrs' \
             --header 'Content-Type: application/json' \
             --header 'Authorization: Bearer {TOKEN}' \
         ```
@@ -455,7 +462,7 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: "#/components/schemas/BulletinObject"
+                      $ref: "#/components/schemas/InputKRSObject"
         "default":
           description: |
             ```
@@ -476,9 +483,9 @@ paths:
                     description: "error description"
                     example: "Server Error"
 
-  /bulletins/{bulletin_id}:
+  /inputkrs/{inputkrs_id}:
     parameters:
-      - name: bulletin_id
+      - name: inputkrs_id
         in: path
         required: true
         schema:
@@ -486,14 +493,14 @@ paths:
 
     get:
       tags:
-        - Bulletins
-      summary: Get Bulletin by ID
+        - InputKRS
+      summary: Get InputKRS by ID
       security:
         - BearerAuth: []
       description: |
-        Get a specific bulletin by ID
+        Get a specific inputkrs by ID
         ```
-        curl --location --request GET '`${url}`/api/v1/bulletins/{bulletin_id}' \
+        curl --location --request GET '`${url}`/api/v1/inputkrs/{inputkrs_id}' \
             --header 'Content-Type: application/json' \
             --header 'Authorization: Bearer {TOKEN}' \
         ```
@@ -503,7 +510,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/BulletinObject"
+                $ref: "#/components/schemas/InputKRSObject"
 
         "default":
           description: |
@@ -527,20 +534,20 @@ paths:
 
     delete:
       tags:
-        - Bulletins
-      summary: Delete Bulletin by ID
+        - InputKRS
+      summary: Delete InputKRS by ID
       security:
         - BearerAuth: []
       description: |
-        Delete a specific bulletin by ID
+        Delete a specific inputkrs by ID
         ```
-        curl --location --request DELETE '`${url}`/api/v1/bulletins/{bulletin_id}' \
+        curl --location --request DELETE '`${url}`/api/v1/inputkrs/{inputkrs_id}' \
             --header 'Content-Type: application/json' \
             --header 'Authorization: Bearer {TOKEN}' \
         ```
       responses:
         "200":
-          description: Bulletin successfully deleted
+          description: InputKRS successfully deleted
           content:
             text/plain:
               schema:
@@ -565,36 +572,37 @@ paths:
                 message: Resource not exist
     put:
       tags:
-        - Bulletins
-      summary: Edit Bulletin
+        - InputKRS
+      summary: Edit InputKRS
       security:
         - BearerAuth: []
       description: |
-        Edit the details of a bulletin
+        Edit the details of a inputkrs
         ```
-        curl --location --request PUT '`${url}`/api/v1/bulletins/{bulletin_id}' \
+        curl --location --request PUT '`${url}`/api/v1/inputkrs/{inputkrs_id}' \
             --header 'Content-Type: application/json' \
             --header 'Authorization: Bearer {TOKEN}' \
             --data-raw '{
                 "title": "Updated Title",
-                "content": "Updated content",
-                "author": "Updated Author",
-                "date": "2024-06-27"
+                "penyelenggara": "who",
+                "deskripsi": "deskripsi",
+                "tahun_kegiatan": "2024-06-27"
+                "file": "https"
             }'
         ```
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/BulletinPostRequestBody"
+              $ref: "#/components/schemas/InputKRSPostRequestBody"
 
       responses:
         "200":
-          description: "Edit Bulletin Success response"
+          description: "Edit inputkrs Success response"
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/BulletinObject"
+                $ref: "#/components/schemas/InputKRSObject"
 
         "default":
           description: |
@@ -616,6 +624,1427 @@ paths:
                     description: "error description"
                     example: "Server Error"
 
+  /softskill:
+    post:
+      tags:
+        - Softskill
+      summary: Add Softskill
+      security:
+        - BearerAuth: []
+      description: |
+        Create a new softskill
+        ```
+        curl --location --request POST '`${url}`/api/v1/softskill' \
+            --header 'Content-Type: application/json' \
+            --header 'Authorization: Bearer {TOKEN}' \
+            --data-raw '{
+                "title": "Updated Title",
+                "penyelenggara": "who",
+                "deskripsi": "deskripsi",
+                "tahun_kegiatan": "2024-06-27"
+                "file": "https"
+            }'
+        ```
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SoftskillPostRequestBody"
+
+      responses:
+        "200":
+          description: "Success response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SoftskillObject"
+
+        "default":
+          description: |
+            ```
+            400 - Bad Request
+            401 - Unauthorized
+            403 - Forbidden
+            404 - Not Found
+            422 - Unprocessable Entity
+            500 - Error on server
+            ```
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    description: "error description"
+                    example: "Server Error"
+    get:
+      tags:
+        - Softskill
+      summary: Get All Softskill
+      security:
+        - BearerAuth: []
+      description: |
+        Get all softskill
+        ```
+        curl --location --request GET '`${url}`/api/v1/softskill' \
+            --header 'Content-Type: application/json' \
+            --header 'Authorization: Bearer {TOKEN}' \
+        ```
+      responses:
+        "200":
+          description: "Success response"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/SoftskillObject"
+        "default":
+          description: |
+            ```
+            400 - Bad Request
+            401 - Unauthorized
+            403 - Forbidden
+            404 - Not Found
+            422 - Unprocessable Entity
+            500 - Error on server
+            ```
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    description: "error description"
+                    example: "Server Error"
+
+  /softskill/{softskill_id}:
+    parameters:
+      - name: softskill_id
+        in: path
+        required: true
+        schema:
+          type: string
+
+    get:
+      tags:
+        - Softskill
+      summary: Get Softskill by ID
+      security:
+        - BearerAuth: []
+      description: |
+        Get a specific softskill by ID
+        ```
+        curl --location --request GET '`${url}`/api/v1/softskill/{softskill_id}' \
+            --header 'Content-Type: application/json' \
+            --header 'Authorization: Bearer {TOKEN}' \
+        ```
+      responses:
+        "200":
+          description: "Success response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SoftskillObject"
+
+        "default":
+          description: |
+            ```
+            400 - Bad Request
+            401 - Unauthorized
+            403 - Forbidden
+            404 - Not Found
+            422 - Unprocessable Entity
+            500 - Error on server
+            ```
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    description: "error description"
+                    example: "Server Error"
+
+    delete:
+      tags:
+        - Softskill
+      summary: Delete Softskill by ID
+      security:
+        - BearerAuth: []
+      description: |
+        Delete a specific Softskill by ID
+        ```
+        curl --location --request DELETE '`${url}`/api/v1/softskill/{softskill_id}' \
+            --header 'Content-Type: application/json' \
+            --header 'Authorization: Bearer {TOKEN}' \
+        ```
+      responses:
+        "200":
+          description: Softskill successfully deleted
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Success
+
+        "default":
+          description: |
+            ```
+            400 - Bad Request
+            401 - Unauthorized
+            403 - Forbidden
+            404 - Not Found
+            422 - Unprocessable Entity
+            500 - Error on server
+            ```
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                message: Resource not exist
+    put:
+      tags:
+        - Softskill
+      summary: Edit Softskill
+      security:
+        - BearerAuth: []
+      description: |
+        Edit the details of a softskill
+        ```
+        curl --location --request PUT '`${url}`/api/v1/softskill/{softskill_id}' \
+            --header 'Content-Type: application/json' \
+            --header 'Authorization: Bearer {TOKEN}' \
+            --data-raw '{
+                "title": "Updated Title",
+                "penyelenggara": "who",
+                "deskripsi": "deskripsi",
+                "tahun_kegiatan": "2024-06-27"
+                "file": "https"
+            }'
+        ```
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SoftskillPostRequestBody"
+
+      responses:
+        "200":
+          description: "Edit softskill Success response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SoftskillObject"
+
+        "default":
+          description: |
+            ```
+            400 - Bad Request
+            401 - Unauthorized
+            403 - Forbidden
+            404 - Not Found
+            422 - Unprocessable Entity
+            500 - Error on server
+            ```
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    description: "error description"
+                    example: "Server Error"
+
+  /billings:
+    post:
+      tags:
+        - Billings
+      summary: Add Billings
+      security:
+        - BearerAuth: []
+      description: |
+        Create a new billing
+        ```
+        curl --location --request POST '`${url}`/api/v1/billings' \
+            --header 'Content-Type: application/json' \
+            --header 'Authorization: Bearer {TOKEN}' \
+            --data-raw '{
+                "nim": "422023022",
+                "nama": "victorio",
+                "tagihan": "jumlah tagihan",
+                "date": "2024-06-26"
+            }'
+        ```
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BillingPostRequestBody"
+      responses:
+        "200":
+          description: "Success response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BillingObject"
+        "default":
+          description: |
+            ```
+            400 - Bad Request
+            401 - Unauthorized
+            403 - Forbidden
+            404 - Not Found
+            422 - Unprocessable Entity
+            500 - Error on server
+            ```
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    description: "error description"
+                    example: "Server Error"
+
+    get:
+      tags:
+        - Billings
+      summary: Get All Billings
+      security:
+        - BearerAuth: []
+      description: |
+        Get all billings
+        ```
+        curl --location --request GET '`${url}`/api/v1/billings' \
+            --header 'Content-Type: application/json' \
+            --header 'Authorization: Bearer {TOKEN}' \
+        ```
+      responses:
+        "200":
+          description: "Success response"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/BillingObject"
+        "default":
+          description: |
+            ```
+            400 - Bad Request
+            401 - Unauthorized
+            403 - Forbidden
+            404 - Not Found
+            422 - Unprocessable Entity
+            500 - Error on server
+            ```
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    description: "error description"
+                    example: "Server Error"
+
+  /billings/{billing_id}:
+    parameters:
+      - name: billing_id
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      tags:
+        - Billings
+      summary: Get Billing by ID
+      security:
+        - BearerAuth: []
+      description: |
+        Get a specific billing by ID
+        ```
+        curl --location --request GET '`${url}`/api/v1/billings/{billing_id}' \
+            --header 'Content-Type: application/json' \
+            --header 'Authorization: Bearer {TOKEN}' \
+        ```
+      responses:
+        "200":
+          description: "Success response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BillingObject"
+        "default":
+          description: |
+            ```
+            400 - Bad Request
+            401 - Unauthorized
+            403 - Forbidden
+            404 - Not Found
+            422 - Unprocessable Entity
+            500 - Error on server
+            ```
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    description: "error description"
+                    example: "Server Error"
+
+    delete:
+      tags:
+        - Billings
+      summary: Delete Billing by ID
+      security:
+        - BearerAuth: []
+      description: |
+        Delete a specific billing by ID
+        ```
+        curl --location --request DELETE '`${url}`/api/v1/billings/{billing_id}' \
+            --header 'Content-Type: application/json' \
+            --header 'Authorization: Bearer {TOKEN}' \
+        ```
+      responses:
+        "200":
+          description: Billing successfully deleted
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Success
+        "default":
+          description: |
+            ```
+            400 - Bad Request
+            401 - Unauthorized
+            403 - Forbidden
+            404 - Not Found
+            422 - Unprocessable Entity
+            500 - Error on server
+            ```
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                message: Resource not exist
+
+    put:
+      tags:
+        - Billings
+      summary: Edit Billing
+      security:
+        - BearerAuth: []
+      description: |
+        Edit the details of a billing
+        ```
+        curl --location --request PUT '`${url}`/api/v1/billings/{billing_id}' \
+            --header 'Content-Type: application/json' \
+            --header 'Authorization: Bearer {TOKEN}' \
+            --data-raw '{
+                "nim": " Updated nim",
+                "nama": "Updated nama",
+                "tagihan": "Updated jumlah tagihan",
+                "date": "2024-06-26"
+            }'
+        ```
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BillingPostRequestBody"
+      responses:
+        "200":
+          description: "Edit Billing Success response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BillingObject"
+        "default":
+          description: |
+            ```
+            400 - Bad Request
+            401 - Unauthorized
+            403 - Forbidden
+            404 - Not Found
+            422 - Unprocessable Entity
+            500 - Error on server
+            ```
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    description: "error description"
+                    example: "Server Error"
+
+  /dashboard:
+    post:
+      tags:
+        - Dashboard
+      summary: Add Dashboard Data
+      security:
+        - BearerAuth: []
+      description: |
+        Create new dashboard data
+        ```
+        curl --location --request POST '`${url}`/api/v1/dashboard' \
+            --header 'Content-Type: application/json' \
+            --header 'Authorization: Bearer {TOKEN}' \
+            --data-raw '{
+              "nim": "422023022",
+              "nama": "victorio",
+              "IPK": "3.75",
+              "totaltagihan": "jumlah tagihan",
+              "schedule": "2024-06-26"
+          }'
+        ```
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DashboardPostRequestBody"
+      responses:
+        "200":
+          description: "Success response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DashboardObject"
+        "default":
+          description: |
+            ```
+            400 - Bad Request
+            401 - Unauthorized
+            403 - Forbidden
+            404 - Not Found
+            422 - Unprocessable Entity
+            500 - Error on server
+            ```
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    description: "error description"
+                    example: "Server Error"
+
+    get:
+      tags:
+        - Dashboard
+      summary: Get All Dashboard Data
+      security:
+        - BearerAuth: []
+      description: |
+        Get all dashboard data
+        ```
+        curl --location --request GET '`${url}`/api/v1/dashboard' \
+            --header 'Content-Type: application/json' \
+            --header 'Authorization: Bearer {TOKEN}' \
+        ```
+      responses:
+        "200":
+          description: "Success response"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/DashboardObject"
+        "default":
+          description: |
+            ```
+            400 - Bad Request
+            401 - Unauthorized
+            403 - Forbidden
+            404 - Not Found
+            422 - Unprocessable Entity
+            500 - Error on server
+            ```
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    description: "error description"
+                    example: "Server Error"
+
+  /dashboard/{dashboard_id}:
+    parameters:
+      - name: dashboard_id
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      tags:
+        - Dashboard
+      summary: Get Dashboard Data by ID
+      security:
+        - BearerAuth: []
+      description: |
+        Get specific dashboard data by ID
+        ```
+        curl --location --request GET '`${url}`/api/v1/dashboard/{dashboard_id}' \
+            --header 'Content-Type: application/json' \
+            --header 'Authorization: Bearer {TOKEN}' \
+        ```
+      responses:
+        "200":
+          description: "Success response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DashboardObject"
+        "default":
+          description: |
+            ```
+            400 - Bad Request
+            401 - Unauthorized
+            403 - Forbidden
+            404 - Not Found
+            422 - Unprocessable Entity
+            500 - Error on server
+            ```
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    description: "error description"
+                    example: "Server Error"
+
+    delete:
+      tags:
+        - Dashboard
+      summary: Delete Dashboard Data by ID
+      security:
+        - BearerAuth: []
+      description: |
+        Delete specific dashboard data by ID
+        ```
+        curl --location --request DELETE '`${url}`/api/v1/dashboard/{dashboard_id}' \
+            --header 'Content-Type: application/json' \
+            --header 'Authorization: Bearer {TOKEN}' \
+        ```
+      responses:
+        "200":
+          description: Dashboard data successfully deleted
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Success
+        "default":
+          description: |
+            ```
+            400 - Bad Request
+            401 - Unauthorized
+            403 - Forbidden
+            404 - Not Found
+            422 - Unprocessable Entity
+            500 - Error on server
+            ```
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Resource not exist
+
+    put:
+      tags:
+        - Dashboard
+      summary: Edit Dashboard Data
+      security:
+        - BearerAuth: []
+      description: |
+        Edit details of a dashboard data
+        ```
+        curl --location --request PUT '`${url}`/api/v1/dashboard/{dashboard_id}' \
+            --header 'Content-Type: application/json' \
+            --header 'Authorization: Bearer {TOKEN}' \
+            --data-raw '{
+                "nim": " Updated nim",
+                "nama": "Updated nama",
+                "IPK": 3.85,
+                "totaltagihan": "Updated jumlah tagihan",
+                "schedule": "2024-06-26"
+            }'
+        ```
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DashboardPostRequestBody"
+      responses:
+        "200":
+          description: "Edit Dashboard Success response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DashboardObject"
+        "default":
+          description: |
+            ```
+            400 - Bad Request
+            401 - Unauthorized
+            403 - Forbidden
+            404 - Not Found
+            422 - Unprocessable Entity
+            500 - Error on server
+            ```
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    description: "error description"
+                    example: "Server Error"
+
+  /news:
+    post:
+      tags:
+        - News
+      summary: Add News
+      security:
+        - BearerAuth: []
+      description: |
+        Create a new news
+        ```
+        curl --location --request POST '`${url}`/api/v1/news' \
+            --header 'Content-Type: application/json' \
+            --header 'Authorization: Bearer {TOKEN}' \
+            --data-raw '{
+                "title": "NewsTitle",
+                "content": "Content of the news"
+            }'
+        ```
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NewsPostRequestBody"
+
+      responses:
+        "200":
+          description: "Success response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NewsObject"
+
+        "default":
+          description: |
+            ```
+            400 - Bad Request
+            401 - Unauthorized
+            403 - Forbidden
+            404 - Not Found
+            422 - Unprocessable Entity
+            500 - Error on server
+            ```
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    description: "error description"
+                    example: "Server Error"
+    get:
+      tags:
+        - News
+      summary: Get All News
+      security:
+        - BearerAuth: []
+      description: |
+        Get all news
+        ```
+        curl --location --request GET '`${url}`/api/v1/news' \
+            --header 'Content-Type: application/json' \
+            --header 'Authorization: Bearer {TOKEN}' \
+        ```
+      responses:
+        "200":
+          description: "Success response"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/NewsObject"
+        "default":
+          description: |
+            ```
+            400 - Bad Request
+            401 - Unauthorized
+            403 - Forbidden
+            404 - Not Found
+            422 - Unprocessable Entity
+            500 - Error on server
+            ```
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    description: "error description"
+                    example: "Server Error"
+
+  /news/{news_id}:
+    parameters:
+      - name: news_id
+        in: path
+        required: true
+        schema:
+          type: string
+
+    get:
+      tags:
+        - News
+      summary: Get News by ID
+      security:
+        - BearerAuth: []
+      description: |
+        Get a specific news by ID
+        ```
+        curl --location --request GET '`${url}`/api/v1/news/{news_id}' \
+            --header 'Content-Type: application/json' \
+            --header 'Authorization: Bearer {TOKEN}' \
+        ```
+      responses:
+        "200":
+          description: "Success response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NewsObject"
+
+        "default":
+          description: |
+            ```
+            400 - Bad Request
+            401 - Unauthorized
+            403 - Forbidden
+            404 - Not Found
+            422 - Unprocessable Entity
+            500 - Error on server
+            ```
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    description: "error description"
+                    example: "Server Error"
+
+    delete:
+      tags:
+        - News
+      summary: Delete News by ID
+      security:
+        - BearerAuth: []
+      description: |
+        Delete a specific news by ID
+        ```
+        curl --location --request DELETE '`${url}`/api/v1/news/{news_id}' \
+            --header 'Content-Type: application/json' \
+            --header 'Authorization: Bearer {TOKEN}' \
+        ```
+      responses:
+        "200":
+          description: News successfully deleted
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Success
+
+        "default":
+          description: |
+            ```
+            400 - Bad Request
+            401 - Unauthorized
+            403 - Forbidden
+            404 - Not Found
+            422 - Unprocessable Entity
+            500 - Error on server
+            ```
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                message: Resource not exist
+    put:
+      tags:
+        - News
+      summary: Edit News
+      security:
+        - BearerAuth: []
+      description: |
+        Edit the details of a news
+        ```
+        curl --location --request PUT '`${url}`/api/v1/news/{news_id}' \
+            --header 'Content-Type: application/json' \
+            --header 'Authorization: Bearer {TOKEN}' \
+            --data-raw '{
+                "title": "Updated Title",
+                "penyelenggara": "who",
+                "deskripsi": "deskripsi",
+                "tahun_kegiatan": "2024-06-27"
+                "file": "https"
+            }'
+        ```
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NewsPostRequestBody"
+
+      responses:
+        "200":
+          description: "Edit News Success response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NewsObject"
+
+        "default":
+          description: |
+            ```
+            400 - Bad Request
+            401 - Unauthorized
+            403 - Forbidden
+            404 - Not Found
+            422 - Unprocessable Entity
+            500 - Error on server
+            ```
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    description: "error description"
+                    example: "Server Error"
+  /exam:
+    post:
+      tags:
+        - Exam
+      summary: Add Exam
+      security:
+        - BearerAuth: []
+      description: |
+        Create a new exam
+        ```
+        curl --location --request POST '`${url}`/api/v1/exam' \
+            --header 'Content-Type: application/json' \
+            --header 'Authorization: Bearer {TOKEN}' \
+            --data-raw '{
+                "Kode_mk": "Exam Title",
+                "course": "Course of the exam",
+                "date": "2024-06-27",
+                "room": "room number"
+ 
+            }'
+        ```
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ExamPostRequestBody"
+
+      responses:
+        "200":
+          description: "Success response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExamObject"
+
+        "default":
+          description: |
+            ```
+            400 - Bad Request
+            401 - Unauthorized
+            403 - Forbidden
+            404 - Not Found
+            422 - Unprocessable Entity
+            500 - Error on server
+            ```
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    description: "error description"
+                    example: "Server Error"
+    get:
+      tags:
+        - Exam
+      summary: Get All Exam
+      security:
+        - BearerAuth: []
+      description: |
+        Get all exam
+        ```
+        curl --location --request GET '`${url}`/api/v1/exam' \
+            --header 'Content-Type: application/json' \
+            --header 'Authorization: Bearer {TOKEN}' \
+        ```
+      responses:
+        "200":
+          description: "Success response"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/ExamObject"
+        "default":
+          description: |
+            ```
+            400 - Bad Request
+            401 - Unauthorized
+            403 - Forbidden
+            404 - Not Found
+            422 - Unprocessable Entity
+            500 - Error on server
+            ```
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    description: "error description"
+                    example: "Server Error"
+
+  /exam/{exam_id}:
+    parameters:
+      - name: exam_id
+        in: path
+        required: true
+        schema:
+          type: string
+
+    get:
+      tags:
+        - Exam
+      summary: Get Exam by ID
+      security:
+        - BearerAuth: []
+      description: |
+        Get a specific exam by ID
+        ```
+        curl --location --request GET '`${url}`/api/v1/exam/{exam_id}' \
+            --header 'Content-Type: application/json' \
+            --header 'Authorization: Bearer {TOKEN}' \
+        ```
+      responses:
+        "200":
+          description: "Success response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExamObject"
+
+        "default":
+          description: |
+            ```
+            400 - Bad Request
+            401 - Unauthorized
+            403 - Forbidden
+            404 - Not Found
+            422 - Unprocessable Entity
+            500 - Error on server
+            ```
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    description: "error description"
+                    example: "Server Error"
+
+    delete:
+      tags:
+        - Exam
+      summary: Delete Exam by ID
+      security:
+        - BearerAuth: []
+      description: |
+        Delete a specific exam by ID
+        ```
+        curl --location --request DELETE '`${url}`/api/v1/exam/{exam_id}' \
+            --header 'Content-Type: application/json' \
+            --header 'Authorization: Bearer {TOKEN}' \
+        ```
+      responses:
+        "200":
+          description: Exam successfully deleted
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Success
+
+        "default":
+          description: |
+            ```
+            400 - Bad Request
+            401 - Unauthorized
+            403 - Forbidden
+            404 - Not Found
+            422 - Unprocessable Entity
+            500 - Error on server
+            ```
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                message: Resource not exist
+    put:
+      tags:
+        - Exam
+      summary: Edit Exam
+      security:
+        - BearerAuth: []
+      description: |
+        Edit the details of a exam
+        ```
+        curl --location --request PUT '`${url}`/api/v1/exam/{exam_id}' \
+            --header 'Content-Type: application/json' \
+            --header 'Authorization: Bearer {TOKEN}' \
+            --data-raw '{
+                "Kode_mk": "Exam Title",
+                "course": "Course of the exam",
+                "date": "2024-06-27",
+                "room": "room number"
+            }'
+        ```
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ExamPostRequestBody"
+
+      responses:
+        "200":
+          description: "Edit Exam Success response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExamObject"
+
+        "default":
+          description: |
+            ```
+            400 - Bad Request
+            401 - Unauthorized
+            403 - Forbidden
+            404 - Not Found
+            422 - Unprocessable Entity
+            500 - Error on server
+            ```
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    description: "error description"
+                    example: "Server Error"
+  /campusevent:
+    post:
+      tags:
+        - CampusEvent
+      summary: Add CampusEvent
+      security:
+        - BearerAuth: []
+      description: |
+        Create a new campusevent
+        ```
+        curl --location --request POST '`${url}`/api/v1/campusevent' \
+            --header 'Content-Type: application/json' \
+            --header 'Authorization: Bearer {TOKEN}' \
+            --data-raw '{
+                "title": "CampusEvent Title",
+                "date": "2024-06-27",
+                "time": "time of  the campusevent",
+                "location": "location"
+ 
+            }'
+        ```
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CampusEventPostRequestBody"
+
+      responses:
+        "200":
+          description: "Success response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CampusEventObject"
+
+        "default":
+          description: |
+            ```
+            400 - Bad Request
+            401 - Unauthorized
+            403 - Forbidden
+            404 - Not Found
+            422 - Unprocessable Entity
+            500 - Error on server
+            ```
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    description: "error description"
+                    example: "Server Error"
+    get:
+      tags:
+        - CampusEvent
+      summary: Get All CampusEvent
+      security:
+        - BearerAuth: []
+      description: |
+        Get all campusevent
+        ```
+        curl --location --request GET '`${url}`/api/v1/campusevent' \
+            --header 'Content-Type: application/json' \
+            --header 'Authorization: Bearer {TOKEN}' \
+        ```
+      responses:
+        "200":
+          description: "Success response"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/CampusEventObject"
+        "default":
+          description: |
+            ```
+            400 - Bad Request
+            401 - Unauthorized
+            403 - Forbidden
+            404 - Not Found
+            422 - Unprocessable Entity
+            500 - Error on server
+            ```
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    description: "error description"
+                    example: "Server Error"
+
+  /campusevent/{campusevent_id}:
+    parameters:
+      - name: campusevent_id
+        in: path
+        required: true
+        schema:
+          type: string
+
+    get:
+      tags:
+        - CampusEvent
+      summary: Get CampusEvent by ID
+      security:
+        - BearerAuth: []
+      description: |
+        Get a specific campusevent by ID
+        ```
+        curl --location --request GET '`${url}`/api/v1/campusevent/{campusevent_id}' \
+            --header 'Content-Type: application/json' \
+            --header 'Authorization: Bearer {TOKEN}' \
+        ```
+      responses:
+        "200":
+          description: "Success response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CampusEventObject"
+
+        "default":
+          description: |
+            ```
+            400 - Bad Request
+            401 - Unauthorized
+            403 - Forbidden
+            404 - Not Found
+            422 - Unprocessable Entity
+            500 - Error on server
+            ```
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    description: "error description"
+                    example: "Server Error"
+
+    delete:
+      tags:
+        - CampusEvent
+      summary: Delete CampusEvent by ID
+      security:
+        - BearerAuth: []
+      description: |
+        Delete a specific campusevent by ID
+        ```
+        curl --location --request DELETE '`${url}`/api/v1/campusevent/{campusevent_id}' \
+            --header 'Content-Type: application/json' \
+            --header 'Authorization: Bearer {TOKEN}' \
+        ```
+      responses:
+        "200":
+          description: CampusEvent successfully deleted
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Success
+
+        "default":
+          description: |
+            ```
+            400 - Bad Request
+            401 - Unauthorized
+            403 - Forbidden
+            404 - Not Found
+            422 - Unprocessable Entity
+            500 - Error on server
+            ```
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                message: Resource not exist
+    put:
+      tags:
+        - CampusEvent
+      summary: Edit CampusEvent
+      security:
+        - BearerAuth: []
+      description: |
+        Edit the details of a campusevent
+        ```
+        curl --location --request PUT '`${url}`/api/v1/campusevent/{campusevent_id}' \
+            --header 'Content-Type: application/json' \
+            --header 'Authorization: Bearer {TOKEN}' \
+            --data-raw '{
+                "title": "CampusEvent Title",
+                "date": "2024-06-27",
+                "time": "time of  the campusevent",
+                "location": "location"
+            }'
+        ```
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CampusEventPostRequestBody"
+
+      responses:
+        "200":
+          description: "Edit CampusEvent Success response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CampusEventObject"
+
+        "default":
+          description: |
+            ```
+            400 - Bad Request
+            401 - Unauthorized
+            403 - Forbidden
+            404 - Not Found
+            422 - Unprocessable Entity
+            500 - Error on server
+            ```
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    description: "error description"
+                    example: "Server Error"
+ 
 components:
   schemas:
     CourseObject:
@@ -644,7 +2073,6 @@ components:
         description:
           description: course description
           type: string
-
         user:
           description: user own the resource
           type: object
@@ -655,6 +2083,7 @@ components:
             name:
               description: user name
               type: string
+
     CoursePostRequestBody:
       type: object
       required:
@@ -678,23 +2107,74 @@ components:
         description:
           description: course description
           type: string
-    BulletinPostRequestBody:
+
+    InputKRSPostRequestBody:
+      type: object
+      properties:
+        course:
+          type: string
+          example: "course"
+        sks:
+          type: string
+          example: "course"
+        day:
+          type: string
+          format: date
+          example: "2024-06-26"
+        kelas:
+          type: string
+          example: "course"
+        type:
+          type: string
+          example: "course"
+        room:
+          type: string
+          example: "course"
+          
+    InputKRSObject:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "1234567890"
+        course:
+          type: string
+          example: "course"
+        sks:
+          type: string
+          example: "course"
+        day:
+          type: string
+          format: date
+          example: "2024-06-26"
+        kelas:
+          type: string
+          example: "course"
+        type:
+          type: string
+          example: "course"
+        room:
+          type: string
+          example: "course"
+
+    SoftskillPostRequestBody:
       type: object
       properties:
         title:
           type: string
-          example: "Bulletin Title"
-        content:
+          example: "Softskill Title"
+        deskripsi:
           type: string
-          example: "Content of the bulletin"
-        author:
-          type: string
-          example: "Author Name"
-        date:
+          example: "deskripsi"
+        tahun_kegiatan:
           type: string
           format: date
           example: "2024-06-26"
-    BulletinObject:
+        file:
+          type: string
+          example: "https"
+          
+    SoftskillObject:
       type: object
       properties:
         id:
@@ -702,20 +2182,242 @@ components:
           example: "1234567890"
         title:
           type: string
-          example: "Bulletin Title"
-        content:
+          example: "Softskill Title"
+        deskripsi:
           type: string
-          example: "Content of the bulletin"
-        author:
+          example: "deskripsi"
+        tahun_kegiatan:
           type: string
-          example: "Author Name"
+          format: date
+          example: "2024-06-26"
+        file:
+          type: string
+          example: "https"
+          
+    BillingPostRequestBody:
+      type: object
+      properties:
+        nim:
+          type: integer
+          example: "422023022"
+        nama:
+          type: string
+          example: "victorio"
+        tagihan:
+          type: integer
+          example: "5000000"
         date:
           type: string
           format: date
           example: "2024-06-26"
 
+    BillingObject:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "01"
+        nim:
+          type: integer
+          example: "422023022"
+        nama:
+          type: string
+          example: "victorio"
+        tagihan:
+          type: integer
+          example: "5000000"
+        date:
+          type: string
+          format: date
+          example: "2024-06-26"
+    
+    DashboardObject:
+      type: object
+      required:
+        - nim
+        - nama
+        - IPK
+        - totaltagihan
+        - schedule
+      properties:
+        id:
+          type: string
+          description: dashboard data ID
+        nim:
+          type: integer
+          example: "422023022"
+          description: student's NIM
+        nama:
+          type: string
+          example: "victorio"
+          description: student's name
+        IPK:
+          type: string
+          example: "3.75"
+          description: student's IPK (Index Prestasi Kumulatif)
+        totaltagihan:
+          type: integer
+          example: "5000000"
+          description: total billing amount
+        schedule:
+          type: string
+          format: date
+          example: "2024-06-26"
+          description:  schedule
+
+    DashboardPostRequestBody:
+      type: object
+      required:
+        - nim
+        - nama
+        - IPK
+        - totaltagihan
+        - schedule
+      properties:
+        nim:
+          type: integer
+          example: "422023022"
+          description: student's NIM
+        nama:
+          type: string
+          example: "victorio"
+          description: student's name
+        IPK:
+          type: string
+          example: "3.75"
+          description: student's IPK (Index Prestasi Kumulatif)
+        totaltagihan:
+          type: integer
+          example: "5000000"
+          description: total billing amount
+        schedule:
+          type: string
+          format: date
+          example: "2024-06-26"
+          description:  schedule
+          
+    NewsPostRequestBody:
+      type: object
+      properties:
+        title:
+          type: string
+          example: "News Title"
+        content:
+          type: string
+          example: "Content of the news"
+     
+    NewsObject:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "1234567890"
+        course:
+          type: string
+          example: "News Title"
+        content:
+          type: string
+          example: "Content of the news"
+
+    ExamPostRequestBody:
+      type: object
+      required:
+        - kode_mk
+        - course
+        - date
+        - room
+       
+      properties:
+        kode_mk:
+          type: string
+          example: "Class code"
+        course:
+          type: string
+          example: "Course of the class"
+        date:
+          type: string
+          format: datetime
+          example: "2024-06-27 10:00"
+        room:
+          type: string
+          example: "Room of the class"
+       
+    ExamObject:
+      type: object
+      required:
+        - kode_mk
+        - course
+        - date
+        - room
+      properties:
+        id:
+          type: string
+          example: "1234567890"
+        kode_mk:
+          type: string
+          example: "Class code"
+        course:
+          type: string
+          example: "Course of the class"
+        date:
+          type: string
+          format: datetime
+          example: "2024-06-27 10:00"
+        room:
+          type: string
+          example: "Room of the class"
+
+    CampusEventPostRequestBody:
+      type: object
+      required:
+        - title
+        - date
+        - time
+        - location
+       
+      properties:
+        title:
+          type: string
+          example: "CampusEvent code"
+        date:
+          type: string
+          format: datetime
+          example: "2024-06-27 10:00"
+        time:
+          type: string
+          example: "CampusEvent time"
+        location:
+          type: string
+          example: "location of the CampusEvent"
+
+    CampusEventObject:
+      type: object
+      required:
+        - title
+        - date
+        - time
+        - location
+      properties:
+        id:
+          type: string
+          example: "1234567890"
+        title:
+          type: string
+          example: "CampusEvent code"
+        date:
+          type: string
+          format: datetime
+          example: "2024-06-27 10:00"
+        time:
+          type: string
+          example: "CampusEvent time"
+        location:
+          type: string
+          example: "location of the CampusEvent of the class"
+          
+
   securitySchemes:
-    BearerAuth: # arbitrary name for the security scheme
+    BearerAuth:
       type: http
       scheme: bearer
       bearerFormat: JWT
