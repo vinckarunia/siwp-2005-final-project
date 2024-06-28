@@ -30,6 +30,10 @@ tags:
     description: Endpoint for managing bulletins
   - name: Classes
     description: Endpoint for managing classes
+  - name: Guidance
+    description: Endpoint for managing academic guidances
+  - name: Profile
+    description: Endpoint for managing profile
 
 paths:
   /user:
@@ -866,6 +870,492 @@ paths:
                       type: string
                       description: "error description"
                       example: "Server Error"
+  
+  # academic guidance
+  /guidance:
+      post:
+        tags:
+          - Guidance
+        summary: Add Guidance
+        security:
+          - BearerAuth: []
+        description: |
+          Create a new guidance
+          ```
+          curl --location --request POST '`${url}`/api/v1/guidance' \
+              --header 'Content-Type: application/json' \
+              --header 'Authorization: Bearer {TOKEN}' \
+              --data-raw '{
+                  "period": "Guidance period",
+                  "category": "Guidance category",
+                  "title": "Guidance title",
+                  "status": "Guidance status",
+                  "remarks": "Guidance remarks"
+              }'
+          ```
+        requestBody:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GuidancePostRequestBody"
+
+        responses:
+          "200":
+            description: "Success response"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/GuidanceObject"
+
+          "default":
+            description: |
+              ```
+              400 - Bad Request
+              401 - Unauthorized
+              403 - Forbidden
+              404 - Not Found
+              422 - Unprocessable Entity
+              500 - Error on server
+              ```
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    detail:
+                      type: string
+                      description: "error description"
+                      example: "Server Error"
+      get:
+        tags:
+          - Guidance
+        summary: Get All Guidance
+        security:
+          - BearerAuth: []
+        description: |
+          Get all guidance
+          ```
+          curl --location --request GET '`${url}`/api/v1/guidance' \
+              --header 'Content-Type: application/json' \
+              --header 'Authorization: Bearer {TOKEN}' \
+          ```
+        responses:
+          "200":
+            description: "Success response"
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    data:
+                      type: array
+                      items:
+                        $ref: "#/components/schemas/GuidanceObject"
+          "default":
+            description: |
+              ```
+              400 - Bad Request
+              401 - Unauthorized
+              403 - Forbidden
+              404 - Not Found
+              422 - Unprocessable Entity
+              500 - Error on server
+              ```
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    detail:
+                      type: string
+                      description: "error description"
+                      example: "Server Error"
+
+  /guidance/{guidance_id}:
+      parameters:
+        - name: guidance_id
+          in: path
+          required: true
+          schema:
+            type: string
+
+      get:
+        tags:
+          - Guidance
+        summary: Get Guidance by ID
+        security:
+          - BearerAuth: []
+        description: |
+          Get a specific guidance by ID
+          ```
+          curl --location --request GET '`${url}`/api/v1/guidance/{guidance_id}' \
+              --header 'Content-Type: application/json' \
+              --header 'Authorization: Bearer {TOKEN}' \
+          ```
+        responses:
+          "200":
+            description: "Success response"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/GuidanceObject"
+
+          "default":
+            description: |
+              ```
+              400 - Bad Request
+              401 - Unauthorized
+              403 - Forbidden
+              404 - Not Found
+              422 - Unprocessable Entity
+              500 - Error on server
+              ```
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    detail:
+                      type: string
+                      description: "error description"
+                      example: "Server Error"
+
+      delete:
+        tags:
+          - Guidance
+        summary: Delete Guidance by ID
+        security:
+          - BearerAuth: []
+        description: |
+          Delete a specific guidance by ID
+          ```
+          curl --location --request DELETE '`${url}`/api/v1/guidance/{guidance_id}' \
+              --header 'Content-Type: application/json' \
+              --header 'Authorization: Bearer {TOKEN}' \
+          ```
+        responses:
+          "200":
+            description: Guidance successfully deleted
+            content:
+              text/plain:
+                schema:
+                  type: string
+                  example: Success
+
+          "default":
+            description: |
+              ```
+              400 - Bad Request
+              401 - Unauthorized
+              403 - Forbidden
+              404 - Not Found
+              422 - Unprocessable Entity
+              500 - Error on server
+              ```
+            content:
+              application/json:
+                schema:
+                  type: object
+                example:
+                  message: Resource not exist
+      put:
+        tags:
+          - Guidance
+        summary: Edit Guidance
+        security:
+          - BearerAuth: []
+        description: |
+          Edit the details of a guidance
+          ```
+          curl --location --request PUT '`${url}`/api/v1/guidance/{guidance_id}' \
+              --header 'Content-Type: application/json' \
+              --header 'Authorization: Bearer {TOKEN}' \
+              --data-raw '{
+                  "period": "Guidance period",
+                  "category": "Guidance category",
+                  "title": "Guidance title",
+                  "status": "Guidance status",
+                  "remarks": "Guidance remarks"
+              }'
+          ```
+        requestBody:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GuidancePostRequestBody"
+
+        responses:
+          "200":
+            description: "Edit Guidance Success response"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/GuidanceObject"
+
+          "default":
+            description: |
+              ```
+              400 - Bad Request
+              401 - Unauthorized
+              403 - Forbidden
+              404 - Not Found
+              422 - Unprocessable Entity
+              500 - Error on server
+              ```
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    detail:
+                      type: string
+                      description: "error description"
+                      example: "Server Error"
+
+  # profile
+  /profile:
+      post:
+        tags:
+          - Profile
+        summary: Add Profile
+        security:
+          - BearerAuth: []
+        description: |
+          Create a new profile
+          ```
+          curl --location --request POST '`${url}`/api/v1/profile' \
+              --header 'Content-Type: application/json' \
+              --header 'Authorization: Bearer {TOKEN}' \
+              --data-raw '{
+                  "name": "Your name",
+                  "nik": "Your nik",
+                  "birthdate": "2024-06-28",
+                  "religion": "Your religion",
+                  "address": "Your address",
+                  "email": "Your email",
+                  "phone": "Your phone"
+              }'
+          ```
+        requestBody:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProfilePostRequestBody"
+
+        responses:
+          "200":
+            description: "Success response"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/ProfileObject"
+
+          "default":
+            description: |
+              ```
+              400 - Bad Request
+              401 - Unauthorized
+              403 - Forbidden
+              404 - Not Found
+              422 - Unprocessable Entity
+              500 - Error on server
+              ```
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    detail:
+                      type: string
+                      description: "error description"
+                      example: "Server Error"
+      get:
+        tags:
+          - Profile
+        summary: Get All Profile
+        security:
+          - BearerAuth: []
+        description: |
+          Get all profile
+          ```
+          curl --location --request GET '`${url}`/api/v1/profile' \
+              --header 'Content-Type: application/json' \
+              --header 'Authorization: Bearer {TOKEN}' \
+          ```
+        responses:
+          "200":
+            description: "Success response"
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    data:
+                      type: array
+                      items:
+                        $ref: "#/components/schemas/ProfileObject"
+          "default":
+            description: |
+              ```
+              400 - Bad Request
+              401 - Unauthorized
+              403 - Forbidden
+              404 - Not Found
+              422 - Unprocessable Entity
+              500 - Error on server
+              ```
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    detail:
+                      type: string
+                      description: "error description"
+                      example: "Server Error"
+
+  /profile/{profile_id}:
+      parameters:
+        - name: profile_id
+          in: path
+          required: true
+          schema:
+            type: string
+
+      get:
+        tags:
+          - Profile
+        summary: Get Profile by ID
+        security:
+          - BearerAuth: []
+        description: |
+          Get a specific profile by ID
+          ```
+          curl --location --request GET '`${url}`/api/v1/profile/{profile_id}' \
+              --header 'Content-Type: application/json' \
+              --header 'Authorization: Bearer {TOKEN}' \
+          ```
+        responses:
+          "200":
+            description: "Success response"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/ProfileObject"
+
+          "default":
+            description: |
+              ```
+              400 - Bad Request
+              401 - Unauthorized
+              403 - Forbidden
+              404 - Not Found
+              422 - Unprocessable Entity
+              500 - Error on server
+              ```
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    detail:
+                      type: string
+                      description: "error description"
+                      example: "Server Error"
+
+      delete:
+        tags:
+          - Profile
+        summary: Delete Profile by ID
+        security:
+          - BearerAuth: []
+        description: |
+          Delete a specific profile by ID
+          ```
+          curl --location --request DELETE '`${url}`/api/v1/profile/{profile_id}' \
+              --header 'Content-Type: application/json' \
+              --header 'Authorization: Bearer {TOKEN}' \
+          ```
+        responses:
+          "200":
+            description: Profile successfully deleted
+            content:
+              text/plain:
+                schema:
+                  type: string
+                  example: Success
+
+          "default":
+            description: |
+              ```
+              400 - Bad Request
+              401 - Unauthorized
+              403 - Forbidden
+              404 - Not Found
+              422 - Unprocessable Entity
+              500 - Error on server
+              ```
+            content:
+              application/json:
+                schema:
+                  type: object
+                example:
+                  message: Resource not exist
+      put:
+        tags:
+          - Profile
+        summary: Edit Profile
+        security:
+          - BearerAuth: []
+        description: |
+          Edit the details of a profile
+          ```
+          curl --location --request PUT '`${url}`/api/v1/profile/{profile_id}' \
+              --header 'Content-Type: application/json' \
+              --header 'Authorization: Bearer {TOKEN}' \
+              --data-raw '{
+                  "name": "Your name",
+                  "nik": "Your nik",
+                  "birthdate": "2024-06-28",
+                  "religion": "Your religion",
+                  "address": "Your address",
+                  "email": "Your email",
+                  "phone": "Your phone"
+              }'
+          ```
+        requestBody:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProfilePostRequestBody"
+
+        responses:
+          "200":
+            description: "Edit Profile Success response"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/ProfileObject"
+
+          "default":
+            description: |
+              ```
+              400 - Bad Request
+              401 - Unauthorized
+              403 - Forbidden
+              404 - Not Found
+              422 - Unprocessable Entity
+              500 - Error on server
+              ```
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    detail:
+                      type: string
+                      description: "error description"
+                      example: "Server Error"
 
 components:
   schemas:
@@ -1045,6 +1535,124 @@ components:
         lecture:
           type: string
           example: "Lecture of the class"
+    GuidancePostRequestBody:
+      type: object
+      required:
+        - period
+        - category
+        - title
+        - status
+      properties:
+        period:
+          type: integer
+          example: "Guidance period"
+        category:
+          type: string
+          example: "Guidance category"
+        title:
+          type: string
+          example: "Guidance title"
+        status:
+          type: string
+          example: "Guidance status"
+        remarks:
+          type: string
+          example: "Guidance remarks"
+    GuidanceObject:
+      type: object
+      required:
+        - period
+        - category
+        - title
+        - status
+      properties:
+        id:
+          type: string
+          example: "1234567890"
+        period:
+          type: integer
+          example: "Guidance period"
+        category:
+          type: string
+          example: "Guidance category"
+        title:
+          type: string
+          example: "Guidance title"
+        status:
+          type: string
+          example: "Guidance status"
+        remarks:
+          type: string
+          example: "Guidance remarks"
+    ProfilePostRequestBody:
+      type: object
+      required:
+        - name
+        - nik
+        - birthdate
+        - religion
+        - address
+        - email
+        - phone
+      properties:
+        name:
+          type: string
+          example: "Your name"
+        nik:
+          type: integer
+          example: "Your nik"
+        birthdate:
+          type: string
+          format: date
+          example: "2024-06-28"
+        religion:
+          type: string
+          example: "Your religion"
+        address:
+          type: string
+          example: "Your address"
+        email:
+          type: string
+          example: "Your email"
+        phone:
+          type: integer
+          example: "Your phone number"
+    ProfileObject:
+      type: object
+      required:
+        - name
+        - nik
+        - birthdate
+        - religion
+        - address
+        - email
+        - phone
+      properties:
+        id:
+          type: string
+          example: "1234567890"
+        name:
+          type: string
+          example: "Your name"
+        nik:
+          type: integer
+          example: "Your nik"
+        birthdate:
+          type: string
+          format: date
+          example: "2024-06-28"
+        religion:
+          type: string
+          example: "Your religion"
+        address:
+          type: string
+          example: "Your address"
+        email:
+          type: string
+          example: "Your email"
+        phone:
+          type: integer
+          example: "Your phone number"
 
   securitySchemes:
     BearerAuth: # arbitrary name for the security scheme

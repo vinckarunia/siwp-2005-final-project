@@ -48,3 +48,29 @@ def add_classes() -> dict:
         abort(400, {'error': 'Request is missing required fields'})
     except NotUniqueError:
         abort(400, {'error': 'kode_mk already exists, please try another kode_mk'})
+
+def add_guidance() -> dict:
+    '''
+    validation for guidances seriliarized
+    '''
+    try:
+        serialized_payload = schema.GuidanceSchema().load(request.get_json())
+        return serialized_payload
+    except ValidationError as e:
+        abort(400, {'errors': e.messages})
+    except FieldDoesNotExist:
+        abort(400, {'error': 'Request is missing required fields'})
+
+def add_profile() -> dict:
+    '''
+    validation for profile seriliarized
+    '''
+    try:
+        serialized_payload = schema.ProfileSchema().load(request.get_json())
+        return serialized_payload
+    except ValidationError as e:
+        abort(400, {'errors': e.messages})
+    except FieldDoesNotExist:
+        abort(400, {'error': 'Request is missing required fields'})
+    except NotUniqueError:
+        abort(400, {'error': 'nik already exists, please try another nik'})

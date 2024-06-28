@@ -7,8 +7,8 @@ from mongoengine.errors import NotUniqueError
 from werkzeug.exceptions import UnprocessableEntity, Conflict
 
 import helper.validator as validator
-from model.course import Course, User, Bulletin, Classes
-from helper.schema import CourseSchema, BulletinSchema, ClassesSchema
+from model.course import Course, User, Bulletin, Classes, Guidance, Profile
+from helper.schema import CourseSchema, BulletinSchema, ClassesSchema, GuidanceSchema, ProfileSchema
 
 # Course
 class CourseListAPI(Resource):
@@ -138,7 +138,89 @@ class ClassesAPI(Resource):
         msg={"message": "Classes: {} deleted".format(classes_id)}
         return msg, 200
 
+# Academic Guidance
+class GuidanceListAPI(Resource):
+    @jwt_required()
+    def get(self):
+        guidance = Guidance.objects()
+        serialized_payload = GuidanceSchema(many=True).dump(guidance)
+        return serialized_payload, 200
+    
+    @jwt_required()
+    def post(self):
+        serialized_payload = validator.add_guidance()
+        guidance = Guidance(**serialized_payload)
+        guidance.save()
+        serialized_payload = GuidanceSchema().dump(guidance)
+        return serialized_payload, 200
 
-        
+class GuidanceAPI(Resource):
+    @jwt_required()
+    def get(self, guidance_id):
+        app.logger.info("guidance id: {}".format(guidance_id))
+        guidance = Guidance.objects.get(id=guidance_id)
+        serialized_payload = GuidanceSchema().dump(guidance)
+        return serialized_payload, 200
+    
+    @jwt_required()
+    def put(self, guidance_id):
+        guidance = Guidance.objects.get(id=guidance_id)
+        user = User.objects.get(id=get_jwt_identity())
+        serialized_payload = validator.add_guidance()
+        for key, value in serialized_payload.items():
+            setattr(guidance, key, value)
+        guidance.save()
+        serialized_payload = GuidanceSchema().dump(guidance)
+        return serialized_payload, 200
+    
+    @jwt_required()
+    def delete(self, guidance_id):        
+        guidance = Guidance.objects.get(id=guidance_id)
+        guidance.delete()
+        app.logger.info("Guidance with id %s deleted", guidance_id)
+        msg={"message": "Guidance: {} deleted".format(guidance_id)}
+        return msg, 200
 
-            
+
+# Profile
+class ProfileListAPI(Resource):
+    @jwt_required()
+    def get(self):
+        profile = Profile.objects()
+        serialized_payload = ProfileSchema(many=True).dump(profile)
+        return serialized_payload, 200
+    
+    @jwt_required()
+    def post(self):
+        serialized_payload = validator.add_profile()
+        profile = Profile(**serialized_payload)
+        profile.save()
+        serialized_payload = ProfileSchema().dump(profile)
+        return serialized_payload, 200
+
+class ProfileAPI(Resource):
+    @jwt_required()
+    def get(self, profile_id):
+        app.logger.info("profile id: {}".format(profile_id))
+        profile = Profile.objects.get(id=profile_id)
+        serialized_payload = ProfileSchema().dump(profile)
+        return serialized_payload, 200
+    
+    @jwt_required()
+    def put(self, profile_id):
+        profile = Profile.objects.get(id=profile_id)
+        user = User.objects.get(id=get_jwt_identity())
+        serialized_payload = validator.add_profile()
+        for key, value in serialized_payload.items():
+            setattr(profile, key, value)
+        profile.save()
+        serialized_payload = ProfileSchema().dump(profile)
+        return serialized_payload, 200
+    
+    @jwt_required()
+    def delete(self, profile_id):        
+        profile = Profile.objects.get(id=profile_id)
+        profile.delete()
+        app.logger.info("Profile with id %s deleted", profile_id)
+        msg={"message": "Profile: {} deleted".format(profile_id)}
+        return msg, 200

@@ -27,3 +27,21 @@ class Classes(db.Document):
     room = db.StringField(required=False)
     online_class = db.StringField(required=False)
     lecture = db.StringField(required=True)
+
+class Guidance(db.Document):
+    user = db.ReferenceField(User)
+    period = db.IntField(required=True)
+    category = db.StringField(required=True)
+    title = db.StringField(required=True)
+    status = db.StringField(required=True)
+    remarks = db.StringField(required=False)
+
+class Profile(db.Document):
+    user = db.ReferenceField(User)
+    name = db.StringField(required=True)
+    nik = db.IntField(required=True, unique=True)
+    birthdate = db.DateField(required=True)
+    religion = db.StringField(required=True)
+    address = db.StringField(required=True)
+    email = db.StringField(required=True)
+    phone = db.IntField(required=True)

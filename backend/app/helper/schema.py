@@ -64,3 +64,23 @@ class ClassesSchema(ma.Schema):
     online_class = fields.String(required=False)
     lecture = fields.String(required=True)
     user = fields.Nested(UserSchema, required=True, dump_only=True)
+
+class GuidanceSchema(ma.Schema):
+    id = fields.String(dump_only=True)
+    period = fields.Integer(required=True)
+    category = fields.String(required=True)
+    title = fields.String(required=True)
+    status = fields.String(required=True)
+    remarks = fields.String(required=False)
+    user = fields.Nested(UserSchema, required=True, dump_only=True)
+
+class ProfileSchema(ma.Schema):
+    id = fields.String(dump_only=True)
+    name = fields.String(required=True)
+    nik = fields.Integer(required=True)
+    birthdate = fields.Date(required=True)
+    religion = fields.String(required=True)
+    address = fields.String(required=True)
+    email = fields.String(required=True)
+    phone = fields.Integer(required=True)
+    user = fields.Nested(UserSchema, required=True, dump_only=True)
