@@ -41,13 +41,27 @@ class CourseSchema(ma.Schema):
     description = fields.String(required=False)
     user = fields.Nested(UserSchema, required=True, dump_only=True)
     
+class NewsSchema(ma.Schema):
+    id = fields.String(dump_only=True)
+    title = fields.String(required=True)
+    content = fields.String(required=False)
+    user = fields.Nested(UserSchema, required=True, dump_only=True)
+
+class ExamSchema(ma.Schema):
+    id = fields.String(dump_only=True)
+    kode_mk = fields.String(required=True)
+    course = fields.String(required=True)
+    date = fields.DateTime(required=True)
+    room = fields.String(required=False)
+    user = fields.Nested(UserSchema, required=True, dump_only=True)
+
+class CampusEventSchema(ma.Schema):
+    id = fields.String(dump_only=True)
+    title = fields.String(required=True)
+    date = fields.String(required=True)
+    time = fields.String(required=True)
+    location = fields.String(required=True)
+    user = fields.Nested(UserSchema, required=True, dump_only=True)
+    
 
 #TODO: add any schema here
-
-class BulletinSchema(ma.Schema):
-    id = fields.String(dump_only=True)
-    name = fields.String(required=True)
-    content = fields.String(required=False)
-    # course = fields.Nested(Course, dump_only=True)
-
-
