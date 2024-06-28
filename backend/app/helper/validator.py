@@ -35,3 +35,15 @@ def add_inputkrs() -> dict:
     except FieldDoesNotExist:
         abort(400, {'error': 'Request is missing required fields'})
   
+def add_softskill() -> dict:
+    '''
+    validation for softskill seriliarized
+    '''
+    try:
+        serialized_payload = schema.SoftskillSchema().load(request.get_json())
+        return serialized_payload
+    except ValidationError as e:
+        abort(400, {'errors': e.messages})
+    except FieldDoesNotExist:
+        abort(400, {'error': 'Request is missing required fields'})
+  

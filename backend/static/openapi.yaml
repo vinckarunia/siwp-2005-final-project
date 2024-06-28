@@ -618,6 +618,246 @@ paths:
                     description: "error description"
                     example: "Server Error"
 
+  /softskill:
+    post:
+      tags:
+        - Softskill
+      summary: Add Softskill
+      security:
+        - BearerAuth: []
+      description: |
+        Create a new softskill
+        ```
+        curl --location --request POST '`${url}`/api/v1/softskill' \
+            --header 'Content-Type: application/json' \
+            --header 'Authorization: Bearer {TOKEN}' \
+            --data-raw '{
+                "title": "Updated Title",
+                "penyelenggara": "who",
+                "deskripsi": "deskripsi",
+                "tahun_kegiatan": "2024-06-27"
+                "file": "https"
+            }'
+        ```
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SoftskillPostRequestBody"
+
+      responses:
+        "200":
+          description: "Success response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SoftskillObject"
+
+        "default":
+          description: |
+            ```
+            400 - Bad Request
+            401 - Unauthorized
+            403 - Forbidden
+            404 - Not Found
+            422 - Unprocessable Entity
+            500 - Error on server
+            ```
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    description: "error description"
+                    example: "Server Error"
+    get:
+      tags:
+        - Softskill
+      summary: Get All Softskill
+      security:
+        - BearerAuth: []
+      description: |
+        Get all softskill
+        ```
+        curl --location --request GET '`${url}`/api/v1/softskill' \
+            --header 'Content-Type: application/json' \
+            --header 'Authorization: Bearer {TOKEN}' \
+        ```
+      responses:
+        "200":
+          description: "Success response"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/SoftskillObject"
+        "default":
+          description: |
+            ```
+            400 - Bad Request
+            401 - Unauthorized
+            403 - Forbidden
+            404 - Not Found
+            422 - Unprocessable Entity
+            500 - Error on server
+            ```
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    description: "error description"
+                    example: "Server Error"
+
+  /softskill/{softskill_id}:
+    parameters:
+      - name: softskill_id
+        in: path
+        required: true
+        schema:
+          type: string
+
+    get:
+      tags:
+        - Softskill
+      summary: Get Softskill by ID
+      security:
+        - BearerAuth: []
+      description: |
+        Get a specific softskill by ID
+        ```
+        curl --location --request GET '`${url}`/api/v1/softskill/{softskill_id}' \
+            --header 'Content-Type: application/json' \
+            --header 'Authorization: Bearer {TOKEN}' \
+        ```
+      responses:
+        "200":
+          description: "Success response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SoftskillObject"
+
+        "default":
+          description: |
+            ```
+            400 - Bad Request
+            401 - Unauthorized
+            403 - Forbidden
+            404 - Not Found
+            422 - Unprocessable Entity
+            500 - Error on server
+            ```
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    description: "error description"
+                    example: "Server Error"
+
+    delete:
+      tags:
+        - Softskill
+      summary: Delete Softskill by ID
+      security:
+        - BearerAuth: []
+      description: |
+        Delete a specific Softskill by ID
+        ```
+        curl --location --request DELETE '`${url}`/api/v1/softskill/{softskill_id}' \
+            --header 'Content-Type: application/json' \
+            --header 'Authorization: Bearer {TOKEN}' \
+        ```
+      responses:
+        "200":
+          description: Softskill successfully deleted
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Success
+
+        "default":
+          description: |
+            ```
+            400 - Bad Request
+            401 - Unauthorized
+            403 - Forbidden
+            404 - Not Found
+            422 - Unprocessable Entity
+            500 - Error on server
+            ```
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                message: Resource not exist
+    put:
+      tags:
+        - Softskill
+      summary: Edit Softskill
+      security:
+        - BearerAuth: []
+      description: |
+        Edit the details of a softskill
+        ```
+        curl --location --request PUT '`${url}`/api/v1/softskill/{softskill_id}' \
+            --header 'Content-Type: application/json' \
+            --header 'Authorization: Bearer {TOKEN}' \
+            --data-raw '{
+                "title": "Updated Title",
+                "penyelenggara": "who",
+                "deskripsi": "deskripsi",
+                "tahun_kegiatan": "2024-06-27"
+                "file": "https"
+            }'
+        ```
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SoftskillPostRequestBody"
+
+      responses:
+        "200":
+          description: "Edit softskill Success response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SoftskillObject"
+
+        "default":
+          description: |
+            ```
+            400 - Bad Request
+            401 - Unauthorized
+            403 - Forbidden
+            404 - Not Found
+            422 - Unprocessable Entity
+            500 - Error on server
+            ```
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    description: "error description"
+                    example: "Server Error"
+
 components:
   schemas:
     CourseObject:
@@ -727,6 +967,41 @@ components:
         room:
           type: string
           example: "course"
+    SoftskillPostRequestBody:
+      type: object
+      properties:
+        title:
+          type: string
+          example: "Softskill Title"
+        deskripsi:
+          type: string
+          example: "deskripsi"
+        tahun_kegiatan:
+          type: string
+          format: date
+          example: "2024-06-26"
+        file:
+          type: string
+          example: "https"
+    SoftskillObject:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "1234567890"
+        title:
+          type: string
+          example: "Softskill Title"
+        deskripsi:
+          type: string
+          example: "deskripsi"
+        tahun_kegiatan:
+          type: string
+          format: date
+          example: "2024-06-26"
+        file:
+          type: string
+          example: "https"
 
   securitySchemes:
     BearerAuth: # arbitrary name for the security scheme

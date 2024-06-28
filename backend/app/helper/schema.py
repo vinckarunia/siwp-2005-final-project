@@ -55,4 +55,13 @@ class InputKRSSchema(ma.Schema):
     user = fields.Nested(UserSchema, required=True, dump_only=True)
     # course = fields.Nested(Course, dump_only=True)
 
+class SoftskillSchema(ma.Schema):
+    id = fields.String(dump_only=True)
+    title = fields.String(required=True)
+    deskripsi = fields.String(required=True)
+    tahun_kegiatan = fields.Date(required=False)
+    file = fields.String(required=True)
+    user = fields.Nested(UserSchema, required=True, dump_only=True)
+    # course = fields.Nested(Course, dump_only=True)
+
 

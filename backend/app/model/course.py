@@ -18,3 +18,11 @@ class InputKRS(db.Document):
     type = db.StringField(required=True)
     room = db.StringField(required=True)
     # course = db.ReferenceField(Course)
+    
+class Softskill(db.Document):
+    user = db.ReferenceField(User)
+    title = db.StringField(required=True)
+    deskripsi = db.StringField(required=True)
+    tahun_kegiatan = db.DateField(required=False)
+    file = db.StringField(required=True)
+    # course = db.ReferenceField(Course)

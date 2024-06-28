@@ -7,8 +7,8 @@ from mongoengine.errors import NotUniqueError
 from werkzeug.exceptions import UnprocessableEntity, Conflict
 
 import helper.validator as validator
-from model.course import Course, User, InputKRS
-from helper.schema import CourseSchema, InputKRSSchema
+from model.course import Course, User, InputKRS, Softskill
+from helper.schema import CourseSchema, InputKRSSchema, SoftskillSchema
 
 class CourseListAPI(Resource):
     @jwt_required()
@@ -91,6 +91,48 @@ class InputKRSAPI(Resource):
         inputkrs.delete()
         app.logger.info("InputKRS with id %s deleted", inputkrs_id)
         msg={"message": "InputKRS: {} deleted".format(inputkrs_id)}
+        return msg, 200
+    
+class SoftskillListAPI(Resource):
+    @jwt_required()
+    def get(self):
+        softskill = Softskill.objects()
+        serialized_payload = SoftskillSchema(many=True).dump(softskill)
+        return serialized_payload, 200
+    
+    @jwt_required()
+    def post(self):
+        serialized_payload = validator.add_softskill()
+        softskill = Softskill(**serialized_payload)
+        softskill.save()
+        serialized_payload = SoftskillSchema().dump(softskill)
+        return serialized_payload, 200
+
+class SoftskillAPI(Resource):
+    @jwt_required()
+    def get(self, softskill_id):
+        app.logger.info("softskill id: {}".format(softskill_id))
+        softskill = Softskill.objects.get(id=softskill_id)
+        serialized_payload = SoftskillSchema().dump(softskill)
+        return serialized_payload, 200
+    
+    @jwt_required()
+    def put(self, softskill_id):
+        softskill = Softskill.objects.get(id=softskill_id)
+        user = User.objects.get(id=get_jwt_identity())
+        serialized_payload = validator.add_softskill()
+        for key, value in serialized_payload.items():
+            setattr(softskill, key, value)
+        softskill.save()
+        serialized_payload = SoftskillSchema().dump(softskill)
+        return serialized_payload, 200
+    
+    @jwt_required()
+    def delete(self, softskill_id):        
+        softskill = Softskill.objects.get(id=softskill_id)
+        softskill.delete()
+        app.logger.info("Softskill with id %s deleted", softskill_id)
+        msg={"message": "Softskill: {} deleted".format(softskill_id)}
         return msg, 200
     #TODO:
     # CRUD
