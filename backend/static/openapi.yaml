@@ -637,7 +637,6 @@ paths:
               --header 'Content-Type: application/json' \
               --header 'Authorization: Bearer {TOKEN}' \
               --data-raw '{
-                  "kode_mk": "Class code",
                   "course": "Course of the class",
                   "type": "Type of the class",
                   "sks": "Total sks",
@@ -824,7 +823,6 @@ paths:
               --header 'Content-Type: application/json' \
               --header 'Authorization: Bearer {TOKEN}' \
               --data-raw '{
-                  "kode_mk": "Class code",
                   "course": "Course of the class",
                   "type": "Type of the class",
                   "sks": "Total sks",
@@ -931,10 +929,6 @@ components:
           type: string
     BulletinPostRequestBody:
       type: object
-      required:
-        - title
-        - content
-        - author
       properties:
         title:
           type: string
@@ -951,10 +945,6 @@ components:
           example: "2024-06-26"
     BulletinObject:
       type: object
-      required:
-        - title
-        - content
-        - author
       properties:
         id:
           type: string
@@ -974,17 +964,7 @@ components:
           example: "2024-06-26"
     ClassesPostRequestBody:
       type: object
-      required:
-        - kode_mk
-        - course
-        - type
-        - sks
-        - date
-        - lecture
       properties:
-        kode_mk:
-          type: string
-          example: "Class code"
         course:
           type: string
           example: "Course of the class"
@@ -1009,20 +989,10 @@ components:
           example: "Lecture of the class"
     ClassesObject:
       type: object
-      required:
-        - kode_mk
-        - course
-        - type
-        - sks
-        - date
-        - lecture
       properties:
         id:
           type: string
           example: "1234567890"
-        kode_mk:
-          type: string
-          example: "Class code"
         course:
           type: string
           example: "Course of the class"

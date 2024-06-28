@@ -19,7 +19,6 @@ class Bulletin(db.Document):
 
 class Classes(db.Document):
     user = db.ReferenceField(User)
-    kode_mk = db.StringField(required=True, unique=True)
     course = db.StringField(required=True)
     type = db.StringField(required=True)
     sks = db.IntField(required=True)

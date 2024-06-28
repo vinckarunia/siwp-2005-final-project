@@ -55,7 +55,6 @@ class BulletinSchema(ma.Schema):
 
 class ClassesSchema(ma.Schema):
     id = fields.String(dump_only=True)
-    kode_mk = fields.String(required=True)
     course = fields.String(required=True)
     type = fields.String(required=True)
     sks = fields.Integer(required=True)

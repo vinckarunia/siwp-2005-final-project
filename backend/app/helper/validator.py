@@ -46,5 +46,3 @@ def add_classes() -> dict:
         abort(400, {'errors': e.messages})
     except FieldDoesNotExist:
         abort(400, {'error': 'Request is missing required fields'})
-    except NotUniqueError:
-        abort(400, {'error': 'kode_mk already exists, please try another kode_mk'})
