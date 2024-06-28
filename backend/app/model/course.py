@@ -9,10 +9,12 @@ class Course(db.Document):
     sks = db.IntField(required=False)
     description = db.StringField(required=False)
     
-class Bulletin(db.Document):
+class InputKRS(db.Document):
     user = db.ReferenceField(User)
-    title = db.StringField(required=True)
-    content =  db.StringField(required=False)
-    author = db.StringField(required=True)
-    date = db.DateField(required=False)
+    course = db.StringField(required=True)
+    sks = db.StringField(required=True)
+    day = db.DateField(required=False)
+    kelas = db.StringField(required=True)
+    type = db.StringField(required=True)
+    room = db.StringField(required=True)
     # course = db.ReferenceField(Course)

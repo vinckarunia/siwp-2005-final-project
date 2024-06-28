@@ -44,12 +44,14 @@ class CourseSchema(ma.Schema):
 
 #TODO: add any schema here
 
-class BulletinSchema(ma.Schema):
+class InputKRSSchema(ma.Schema):
     id = fields.String(dump_only=True)
-    title = fields.String(required=True)
-    content = fields.String(required=False)
-    author = fields.String(required=True)
-    date = fields.Date(required=False)
+    course = fields.String(required=True)
+    sks = fields.String(required=True)
+    day = fields.Date(required=False)
+    kelas = fields.String(required=True)
+    type = fields.String(required=True)
+    room = fields.String(required=True)
     user = fields.Nested(UserSchema, required=True, dump_only=True)
     # course = fields.Nested(Course, dump_only=True)
 

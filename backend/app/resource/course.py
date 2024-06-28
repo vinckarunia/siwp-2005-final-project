@@ -7,8 +7,8 @@ from mongoengine.errors import NotUniqueError
 from werkzeug.exceptions import UnprocessableEntity, Conflict
 
 import helper.validator as validator
-from model.course import Course, User, Bulletin
-from helper.schema import CourseSchema, BulletinSchema
+from model.course import Course, User, InputKRS
+from helper.schema import CourseSchema, InputKRSSchema
 
 class CourseListAPI(Resource):
     @jwt_required()
@@ -51,46 +51,46 @@ class CourseAPI(Resource):
         msg={"message": "Course: {} deleted".format(course_id)}
         return msg, 200
     
-class BulletinListAPI(Resource):
+class InputKRSListAPI(Resource):
     @jwt_required()
     def get(self):
-        bulletins = Bulletin.objects()
-        serialized_payload = BulletinSchema(many=True).dump(bulletins)
+        inputkrs = InputKRS.objects()
+        serialized_payload = InputKRSSchema(many=True).dump(inputkrs)
         return serialized_payload, 200
     
     @jwt_required()
     def post(self):
-        serialized_payload = validator.add_bulletin()
-        bulletin = Bulletin(**serialized_payload)
-        bulletin.save()
-        serialized_payload = BulletinSchema().dump(bulletin)
+        serialized_payload = validator.add_inputkrs()
+        inputkrs = InputKRS(**serialized_payload)
+        inputkrs.save()
+        serialized_payload = InputKRSSchema().dump(inputkrs)
         return serialized_payload, 200
 
-class BulletinAPI(Resource):
+class InputKRSAPI(Resource):
     @jwt_required()
-    def get(self, bulletin_id):
-        app.logger.info("bulletin id: {}".format(bulletin_id))
-        bulletin = Bulletin.objects.get(id=bulletin_id)
-        serialized_payload = BulletinSchema().dump(bulletin)
+    def get(self, inputkrs_id):
+        app.logger.info("inputkrs id: {}".format(inputkrs_id))
+        inputkrs = InputKRS.objects.get(id=inputkrs_id)
+        serialized_payload = InputKRSSchema().dump(inputkrs)
         return serialized_payload, 200
     
     @jwt_required()
-    def put(self, bulletin_id):
-        bulletin = Bulletin.objects.get(id=bulletin_id)
+    def put(self, inputkrs_id):
+        inputkrs = InputKRS.objects.get(id=inputkrs_id)
         user = User.objects.get(id=get_jwt_identity())
-        serialized_payload = validator.add_bulletin()
+        serialized_payload = validator.add_inputkrs()
         for key, value in serialized_payload.items():
-            setattr(bulletin, key, value)
-        bulletin.save()
-        serialized_payload = BulletinSchema().dump(bulletin)
+            setattr(inputkrs, key, value)
+        inputkrs.save()
+        serialized_payload = InputKRSSchema().dump(inputkrs)
         return serialized_payload, 200
     
     @jwt_required()
-    def delete(self, bulletin_id):        
-        bulletin = Bulletin.objects.get(id=bulletin_id)
-        bulletin.delete()
-        app.logger.info("Bulletin with id %s deleted", bulletin_id)
-        msg={"message": "Bulletin: {} deleted".format(bulletin_id)}
+    def delete(self, inputkrs_id):        
+        inputkrs = InputKRS.objects.get(id=inputkrs_id)
+        inputkrs.delete()
+        app.logger.info("InputKRS with id %s deleted", inputkrs_id)
+        msg={"message": "InputKRS: {} deleted".format(inputkrs_id)}
         return msg, 200
     #TODO:
     # CRUD

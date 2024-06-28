@@ -378,31 +378,32 @@ paths:
                     description: "error description"
                     example: "Server Error"
 
-  /bulletins:
+  /inputkrs:
     post:
       tags:
-        - Bulletins
-      summary: Add Bulletin
+        - InputKRS
+      summary: Add InputKRS
       security:
         - BearerAuth: []
       description: |
-        Create a new bulletin
+        Create a new inputkrs
         ```
-        curl --location --request POST '`${url}`/api/v1/bulletins' \
+        curl --location --request POST '`${url}`/api/v1/inputkrs' \
             --header 'Content-Type: application/json' \
             --header 'Authorization: Bearer {TOKEN}' \
             --data-raw '{
-                "title": "Bulletin Title",
-                "content": "Content of the bulletin",
-                "author": "Author Name",
-                "date": "2024-06-26"
+                "title": "Updated Title",
+                "penyelenggara": "who",
+                "deskripsi": "deskripsi",
+                "tahun_kegiatan": "2024-06-27"
+                "file": "https"
             }'
         ```
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/BulletinPostRequestBody"
+              $ref: "#/components/schemas/InputKRSPostRequestBody"
 
       responses:
         "200":
@@ -410,7 +411,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/BulletinObject"
+                $ref: "#/components/schemas/InputKRSObject"
 
         "default":
           description: |
@@ -433,14 +434,14 @@ paths:
                     example: "Server Error"
     get:
       tags:
-        - Bulletins
-      summary: Get All Bulletins
+        - InputKRS
+      summary: Get All InputKRS
       security:
         - BearerAuth: []
       description: |
-        Get all bulletins
+        Get all inputkrs
         ```
-        curl --location --request GET '`${url}`/api/v1/bulletins' \
+        curl --location --request GET '`${url}`/api/v1/inputkrs' \
             --header 'Content-Type: application/json' \
             --header 'Authorization: Bearer {TOKEN}' \
         ```
@@ -455,7 +456,7 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: "#/components/schemas/BulletinObject"
+                      $ref: "#/components/schemas/InputKRSObject"
         "default":
           description: |
             ```
@@ -476,9 +477,9 @@ paths:
                     description: "error description"
                     example: "Server Error"
 
-  /bulletins/{bulletin_id}:
+  /inputkrs/{inputkrs_id}:
     parameters:
-      - name: bulletin_id
+      - name: inputkrs_id
         in: path
         required: true
         schema:
@@ -486,14 +487,14 @@ paths:
 
     get:
       tags:
-        - Bulletins
-      summary: Get Bulletin by ID
+        - InputKRS
+      summary: Get InputKRS by ID
       security:
         - BearerAuth: []
       description: |
-        Get a specific bulletin by ID
+        Get a specific inputkrs by ID
         ```
-        curl --location --request GET '`${url}`/api/v1/bulletins/{bulletin_id}' \
+        curl --location --request GET '`${url}`/api/v1/inputkrs/{inputkrs_id}' \
             --header 'Content-Type: application/json' \
             --header 'Authorization: Bearer {TOKEN}' \
         ```
@@ -503,7 +504,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/BulletinObject"
+                $ref: "#/components/schemas/InputKRSObject"
 
         "default":
           description: |
@@ -527,20 +528,20 @@ paths:
 
     delete:
       tags:
-        - Bulletins
-      summary: Delete Bulletin by ID
+        - InputKRS
+      summary: Delete InputKRS by ID
       security:
         - BearerAuth: []
       description: |
-        Delete a specific bulletin by ID
+        Delete a specific inputkrs by ID
         ```
-        curl --location --request DELETE '`${url}`/api/v1/bulletins/{bulletin_id}' \
+        curl --location --request DELETE '`${url}`/api/v1/inputkrs/{inputkrs_id}' \
             --header 'Content-Type: application/json' \
             --header 'Authorization: Bearer {TOKEN}' \
         ```
       responses:
         "200":
-          description: Bulletin successfully deleted
+          description: InputKRS successfully deleted
           content:
             text/plain:
               schema:
@@ -565,36 +566,37 @@ paths:
                 message: Resource not exist
     put:
       tags:
-        - Bulletins
-      summary: Edit Bulletin
+        - InputKRS
+      summary: Edit InputKRS
       security:
         - BearerAuth: []
       description: |
-        Edit the details of a bulletin
+        Edit the details of a inputkrs
         ```
-        curl --location --request PUT '`${url}`/api/v1/bulletins/{bulletin_id}' \
+        curl --location --request PUT '`${url}`/api/v1/inputkrs/{inputkrs_id}' \
             --header 'Content-Type: application/json' \
             --header 'Authorization: Bearer {TOKEN}' \
             --data-raw '{
                 "title": "Updated Title",
-                "content": "Updated content",
-                "author": "Updated Author",
-                "date": "2024-06-27"
+                "penyelenggara": "who",
+                "deskripsi": "deskripsi",
+                "tahun_kegiatan": "2024-06-27"
+                "file": "https"
             }'
         ```
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/BulletinPostRequestBody"
+              $ref: "#/components/schemas/InputKRSPostRequestBody"
 
       responses:
         "200":
-          description: "Edit Bulletin Success response"
+          description: "Edit inputkrs Success response"
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/BulletinObject"
+                $ref: "#/components/schemas/InputKRSObject"
 
         "default":
           description: |
@@ -678,41 +680,53 @@ components:
         description:
           description: course description
           type: string
-    BulletinPostRequestBody:
+    InputKRSPostRequestBody:
       type: object
       properties:
-        title:
+        course:
           type: string
-          example: "Bulletin Title"
-        content:
+          example: "course"
+        sks:
           type: string
-          example: "Content of the bulletin"
-        author:
-          type: string
-          example: "Author Name"
-        date:
+          example: "course"
+        day:
           type: string
           format: date
           example: "2024-06-26"
-    BulletinObject:
+        kelas:
+          type: string
+          example: "course"
+        type:
+          type: string
+          example: "course"
+        room:
+          type: string
+          example: "course"
+    InputKRSObject:
       type: object
       properties:
         id:
           type: string
           example: "1234567890"
-        title:
+        course:
           type: string
-          example: "Bulletin Title"
-        content:
+          example: "course"
+        sks:
           type: string
-          example: "Content of the bulletin"
-        author:
-          type: string
-          example: "Author Name"
-        date:
+          example: "course"
+        day:
           type: string
           format: date
           example: "2024-06-26"
+        kelas:
+          type: string
+          example: "course"
+        type:
+          type: string
+          example: "course"
+        room:
+          type: string
+          example: "course"
 
   securitySchemes:
     BearerAuth: # arbitrary name for the security scheme

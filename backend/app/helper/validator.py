@@ -23,12 +23,12 @@ def add_course() -> dict:
     except NotUniqueError:
         abort(400, {'error': 'kode_mk already exists, please try another kode_mk'})
        
-def add_bulletin() -> dict:
+def add_inputkrs() -> dict:
     '''
-    validation for bulletin seriliarized
+    validation for inputkrs seriliarized
     '''
     try:
-        serialized_payload = schema.BulletinSchema().load(request.get_json())
+        serialized_payload = schema.InputKRSSchema().load(request.get_json())
         return serialized_payload
     except ValidationError as e:
         abort(400, {'errors': e.messages})
