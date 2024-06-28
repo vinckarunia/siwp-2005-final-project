@@ -27,6 +27,8 @@ tags:
     description: Endpoint for managing courses
   - name: Billings 
     description: Endpoint for managing billings
+  - name: Dashboard
+    description: Endpoint for managing dashboard
 
 paths:
   /user:
@@ -609,6 +611,243 @@ paths:
                     description: "error description"
                     example: "Server Error"
 
+  /dashboard:
+    post:
+      tags:
+        - Dashboard
+      summary: Add Dashboard Data
+      security:
+        - BearerAuth: []
+      description: |
+        Create new dashboard data
+        ```
+        curl --location --request POST '`${url}`/api/v1/dashboard' \
+            --header 'Content-Type: application/json' \
+            --header 'Authorization: Bearer {TOKEN}' \
+            --data-raw '{
+              "nim": "422023022",
+              "nama": "victorio",
+              "IPK": "3.75",
+              "totaltagihan": "jumlah tagihan",
+              "schedule": "2024-06-26"
+          }'
+        ```
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DashboardPostRequestBody"
+      responses:
+        "200":
+          description: "Success response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DashboardObject"
+        "default":
+          description: |
+            ```
+            400 - Bad Request
+            401 - Unauthorized
+            403 - Forbidden
+            404 - Not Found
+            422 - Unprocessable Entity
+            500 - Error on server
+            ```
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    description: "error description"
+                    example: "Server Error"
+
+    get:
+      tags:
+        - Dashboard
+      summary: Get All Dashboard Data
+      security:
+        - BearerAuth: []
+      description: |
+        Get all dashboard data
+        ```
+        curl --location --request GET '`${url}`/api/v1/dashboard' \
+            --header 'Content-Type: application/json' \
+            --header 'Authorization: Bearer {TOKEN}' \
+        ```
+      responses:
+        "200":
+          description: "Success response"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/DashboardObject"
+        "default":
+          description: |
+            ```
+            400 - Bad Request
+            401 - Unauthorized
+            403 - Forbidden
+            404 - Not Found
+            422 - Unprocessable Entity
+            500 - Error on server
+            ```
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    description: "error description"
+                    example: "Server Error"
+
+
+
+  /dashboard/{dashboard_id}:
+    parameters:
+      - name: dashboard_id
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      tags:
+        - Dashboard
+      summary: Get Dashboard Data by ID
+      security:
+        - BearerAuth: []
+      description: |
+        Get specific dashboard data by ID
+        ```
+        curl --location --request GET '`${url}`/api/v1/dashboard/{dashboard_id}' \
+            --header 'Content-Type: application/json' \
+            --header 'Authorization: Bearer {TOKEN}' \
+        ```
+      responses:
+        "200":
+          description: "Success response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DashboardObject"
+        "default":
+          description: |
+            ```
+            400 - Bad Request
+            401 - Unauthorized
+            403 - Forbidden
+            404 - Not Found
+            422 - Unprocessable Entity
+            500 - Error on server
+            ```
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    description: "error description"
+                    example: "Server Error"
+
+    delete:
+      tags:
+        - Dashboard
+      summary: Delete Dashboard Data by ID
+      security:
+        - BearerAuth: []
+      description: |
+        Delete specific dashboard data by ID
+        ```
+        curl --location --request DELETE '`${url}`/api/v1/dashboard/{dashboard_id}' \
+            --header 'Content-Type: application/json' \
+            --header 'Authorization: Bearer {TOKEN}' \
+        ```
+      responses:
+        "200":
+          description: Dashboard data successfully deleted
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Success
+        "default":
+          description: |
+            ```
+            400 - Bad Request
+            401 - Unauthorized
+            403 - Forbidden
+            404 - Not Found
+            422 - Unprocessable Entity
+            500 - Error on server
+            ```
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Resource not exist
+
+    put:
+      tags:
+        - Dashboard
+      summary: Edit Dashboard Data
+      security:
+        - BearerAuth: []
+      description: |
+        Edit details of a dashboard data
+        ```
+        curl --location --request PUT '`${url}`/api/v1/dashboard/{dashboard_id}' \
+            --header 'Content-Type: application/json' \
+            --header 'Authorization: Bearer {TOKEN}' \
+            --data-raw '{
+                "nim": " Updated nim",
+                "nama": "Updated nama",
+                "IPK": 3.85,
+                "totaltagihan": "Updated jumlah tagihan",
+                "schedule": "2024-06-26"
+            }'
+        ```
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DashboardPostRequestBody"
+      responses:
+        "200":
+          description: "Edit Dashboard Success response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DashboardObject"
+        "default":
+          description: |
+            ```
+            400 - Bad Request
+            401 - Unauthorized
+            403 - Forbidden
+            404 - Not Found
+            422 - Unprocessable Entity
+            500 - Error on server
+            ```
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    description: "error description"
+                    example: "Server Error"
+
 components:
   schemas:
     CourseObject:
@@ -708,6 +947,71 @@ components:
           type: string
           format: date
           example: "2024-06-26"
+    
+    DashboardObject:
+      type: object
+      required:
+        - nim
+        - nama
+        - IPK
+        - totaltagihan
+        - schedule
+      properties:
+        id:
+          type: string
+          description: dashboard data ID
+        nim:
+          type: integer
+          example: "422023022"
+          description: student's NIM
+        nama:
+          type: string
+          example: "victorio"
+          description: student's name
+        IPK:
+          type: string
+          example: "3.75"
+          description: student's IPK (Index Prestasi Kumulatif)
+        totaltagihan:
+          type: integer
+          example: "5000000"
+          description: total billing amount
+        schedule:
+          type: string
+          format: date
+          example: "2024-06-26"
+          description:  schedule
+
+    DashboardPostRequestBody:
+      type: object
+      required:
+        - nim
+        - nama
+        - IPK
+        - totaltagihan
+        - schedule
+      properties:
+        nim:
+          type: integer
+          example: "422023022"
+          description: student's NIM
+        nama:
+          type: string
+          example: "victorio"
+          description: student's name
+        IPK:
+          type: string
+          example: "3.75"
+          description: student's IPK (Index Prestasi Kumulatif)
+        totaltagihan:
+          type: integer
+          example: "5000000"
+          description: total billing amount
+        schedule:
+          type: string
+          format: date
+          example: "2024-06-26"
+          description:  schedule
 
   securitySchemes:
     BearerAuth:

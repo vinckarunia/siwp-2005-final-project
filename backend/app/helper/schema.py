@@ -51,6 +51,17 @@ class BillingSchema(ma.Schema):
     tagihan = fields.Integer(required=True)
     date = fields.Date(required=False)
     user = fields.Nested(UserSchema, required=True, dump_only=True)
+
+
+class DashboardSchema(ma.Schema):
+    id = fields.String(dump_only=True)
+    nim = fields.Integer(required=True)
+    nama = fields.String(required=True)
+    IPK = fields.String(required=True)
+    totaltagihan = fields.Integer(required=True)
+    schedule = fields.Date(required=True)
+    user = fields.Nested(UserSchema, required=True, dump_only=True)
+
     # course = fields.Nested(Course, dump_only=True)
 
 

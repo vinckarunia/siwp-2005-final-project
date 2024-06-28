@@ -7,8 +7,8 @@ from mongoengine.errors import NotUniqueError
 from werkzeug.exceptions import UnprocessableEntity, Conflict
 
 import helper.validator as validator
-from model.course import Course, User, Billing
-from helper.schema import CourseSchema, BillingSchema
+from model.course import Course, User, Billing, Dashboard
+from helper.schema import CourseSchema, BillingSchema, DashboardSchema
 
 class CourseListAPI(Resource):
     @jwt_required()
@@ -91,6 +91,47 @@ class BillingAPI(Resource):
         billing.delete()
         app.logger.info("Billing with id %s deleted", billing_id)
         msg={"message": "Billing: {} deleted".format(billing_id)}
+        return msg, 200
+    
+class DashboardListAPI(Resource):
+    @jwt_required()
+    def get(self):
+        dashboard = Dashboard.objects()
+        serialized_payload = DashboardSchema(many=True).dump(dashboard)
+        return serialized_payload, 200
+    
+    @jwt_required()
+    def post(self):
+        serialized_payload = validator.add_dashboard()
+        dashboard = Dashboard(**serialized_payload)
+        dashboard.save()
+        serialized_payload = DashboardSchema().dump(dashboard)
+        return serialized_payload, 200
+
+class DashboardAPI(Resource):
+    @jwt_required()
+    def get(self, dashboard_id):
+        dashboard = Dashboard.objects.get(id=dashboard_id)
+        serialized_payload = DashboardSchema().dump(dashboard)
+        return serialized_payload, 200
+    
+    @jwt_required()
+    def put(self, dashboard_id):
+        dashboard = Dashboard.objects.get(id=dashboard_id)
+        user = User.objects.get(id=get_jwt_identity())
+        serialized_payload = validator.add_dashboard()
+        for key, value in serialized_payload.items():
+            setattr(dashboard, key, value)
+        dashboard.save()
+        serialized_payload = DashboardSchema().dump(dashboard)
+        return serialized_payload, 200
+    
+    @jwt_required()
+    def delete(self, dashboard_id):        
+        dashboard = Dashboard.objects.get(id=dashboard_id)
+        dashboard.delete()
+        app.logger.info("Dashboard with id %s deleted", dashboard_id)
+        msg={"message": "Dashboard: {} deleted".format(dashboard_id)}
         return msg, 200
     #TODO:
     # CRUD

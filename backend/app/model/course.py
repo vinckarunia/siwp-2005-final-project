@@ -15,4 +15,13 @@ class Billing(db.Document):
     nama =  db.StringField(required=True)
     tagihan = db.IntField(required=True)
     date = db.DateField(required=False)
+
+class Dashboard(db.Document):
+    user = db.ReferenceField(User)
+    nim = db.IntField(required=True)
+    nama = db.StringField(required=True)
+    IPK = db.StringField(required=True)
+    totaltagihan = db.IntField(required=True)
+    schedule = db.DateField(required=True)
+
     # course = db.ReferenceField(Course)
