@@ -31,6 +31,10 @@ tags:
     description: Endpoint for managing dashboard
   - name: News
     description: Endpoint for managing news
+  - name: Exam
+    description: Endpoint for managing exams
+  - name: CampusEvent
+    description: Endpoint for managing campus events
 
 paths:
   /user:
@@ -360,6 +364,486 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/CourseObject"
+        "default":
+          description: |
+            ```
+            400 - Bad Request
+            401 - Unauthorized
+            403 - Forbidden
+            404 - Not Found
+            422 - Unprocessable Entity
+            500 - Error on server
+            ```
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    description: "error description"
+                    example: "Server Error"
+
+  /inputkrs:
+    post:
+      tags:
+        - InputKRS
+      summary: Add InputKRS
+      security:
+        - BearerAuth: []
+      description: |
+        Create a new inputkrs
+        ```
+        curl --location --request POST '`${url}`/api/v1/inputkrs' \
+            --header 'Content-Type: application/json' \
+            --header 'Authorization: Bearer {TOKEN}' \
+            --data-raw '{
+                "title": "Updated Title",
+                "penyelenggara": "who",
+                "deskripsi": "deskripsi",
+                "tahun_kegiatan": "2024-06-27"
+                "file": "https"
+            }'
+        ```
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/InputKRSPostRequestBody"
+
+      responses:
+        "200":
+          description: "Success response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InputKRSObject"
+
+        "default":
+          description: |
+            ```
+            400 - Bad Request
+            401 - Unauthorized
+            403 - Forbidden
+            404 - Not Found
+            422 - Unprocessable Entity
+            500 - Error on server
+            ```
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    description: "error description"
+                    example: "Server Error"
+
+    get:
+      tags:
+        - InputKRS
+      summary: Get All InputKRS
+      security:
+        - BearerAuth: []
+      description: |
+        Get all inputkrs
+        ```
+        curl --location --request GET '`${url}`/api/v1/inputkrs' \
+            --header 'Content-Type: application/json' \
+            --header 'Authorization: Bearer {TOKEN}' \
+        ```
+      responses:
+        "200":
+          description: "Success response"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/InputKRSObject"
+        "default":
+          description: |
+            ```
+            400 - Bad Request
+            401 - Unauthorized
+            403 - Forbidden
+            404 - Not Found
+            422 - Unprocessable Entity
+            500 - Error on server
+            ```
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    description: "error description"
+                    example: "Server Error"
+
+  /inputkrs/{inputkrs_id}:
+    parameters:
+      - name: inputkrs_id
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      tags:
+        - InputKRS
+      summary: Get InputKRS by ID
+      security:
+        - BearerAuth: []
+      description: |
+        Get a specific inputkrs by ID
+        ```
+        curl --location --request GET '`${url}`/api/v1/inputkrs/{inputkrs_id}' \
+            --header 'Content-Type: application/json' \
+            --header 'Authorization: Bearer {TOKEN}' \
+        ```
+      responses:
+        "200":
+          description: "Success response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InputKRSObject"
+
+        "default":
+          description: |
+            ```
+            400 - Bad Request
+            401 - Unauthorized
+            403 - Forbidden
+            404 - Not Found
+            422 - Unprocessable Entity
+            500 - Error on server
+            ```
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    description: "error description"
+                    example: "Server Error"
+
+    delete:
+      tags:
+        - InputKRS
+      summary: Delete InputKRS by ID
+      security:
+        - BearerAuth: []
+      description: |
+        Delete a specific inputkrs by ID
+        ```
+        curl --location --request DELETE '`${url}`/api/v1/inputkrs/{inputkrs_id}' \
+            --header 'Content-Type: application/json' \
+            --header 'Authorization: Bearer {TOKEN}' \
+        ```
+      responses:
+        "200":
+          description: InputKRS successfully deleted
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Success
+
+        "default":
+          description: |
+            ```
+            400 - Bad Request
+            401 - Unauthorized
+            403 - Forbidden
+            404 - Not Found
+            422 - Unprocessable Entity
+            500 - Error on server
+            ```
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                message: Resource not exist
+    put:
+      tags:
+        - InputKRS
+      summary: Edit InputKRS
+      security:
+        - BearerAuth: []
+      description: |
+        Edit the details of a inputkrs
+        ```
+        curl --location --request PUT '`${url}`/api/v1/inputkrs/{inputkrs_id}' \
+            --header 'Content-Type: application/json' \
+            --header 'Authorization: Bearer {TOKEN}' \
+            --data-raw '{
+                "title": "Updated Title",
+                "penyelenggara": "who",
+                "deskripsi": "deskripsi",
+                "tahun_kegiatan": "2024-06-27"
+                "file": "https"
+            }'
+        ```
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/InputKRSPostRequestBody"
+
+      responses:
+        "200":
+          description: "Edit inputkrs Success response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InputKRSObject"
+
+        "default":
+          description: |
+            ```
+            400 - Bad Request
+            401 - Unauthorized
+            403 - Forbidden
+            404 - Not Found
+            422 - Unprocessable Entity
+            500 - Error on server
+            ```
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    description: "error description"
+                    example: "Server Error"
+
+  /softskill:
+    post:
+      tags:
+        - Softskill
+      summary: Add Softskill
+      security:
+        - BearerAuth: []
+      description: |
+        Create a new softskill
+        ```
+        curl --location --request POST '`${url}`/api/v1/softskill' \
+            --header 'Content-Type: application/json' \
+            --header 'Authorization: Bearer {TOKEN}' \
+            --data-raw '{
+                "title": "Updated Title",
+                "penyelenggara": "who",
+                "deskripsi": "deskripsi",
+                "tahun_kegiatan": "2024-06-27"
+                "file": "https"
+            }'
+        ```
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SoftskillPostRequestBody"
+
+      responses:
+        "200":
+          description: "Success response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SoftskillObject"
+
+        "default":
+          description: |
+            ```
+            400 - Bad Request
+            401 - Unauthorized
+            403 - Forbidden
+            404 - Not Found
+            422 - Unprocessable Entity
+            500 - Error on server
+            ```
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    description: "error description"
+                    example: "Server Error"
+    get:
+      tags:
+        - Softskill
+      summary: Get All Softskill
+      security:
+        - BearerAuth: []
+      description: |
+        Get all softskill
+        ```
+        curl --location --request GET '`${url}`/api/v1/softskill' \
+            --header 'Content-Type: application/json' \
+            --header 'Authorization: Bearer {TOKEN}' \
+        ```
+      responses:
+        "200":
+          description: "Success response"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/SoftskillObject"
+        "default":
+          description: |
+            ```
+            400 - Bad Request
+            401 - Unauthorized
+            403 - Forbidden
+            404 - Not Found
+            422 - Unprocessable Entity
+            500 - Error on server
+            ```
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    description: "error description"
+                    example: "Server Error"
+
+  /softskill/{softskill_id}:
+    parameters:
+      - name: softskill_id
+        in: path
+        required: true
+        schema:
+          type: string
+
+    get:
+      tags:
+        - Softskill
+      summary: Get Softskill by ID
+      security:
+        - BearerAuth: []
+      description: |
+        Get a specific softskill by ID
+        ```
+        curl --location --request GET '`${url}`/api/v1/softskill/{softskill_id}' \
+            --header 'Content-Type: application/json' \
+            --header 'Authorization: Bearer {TOKEN}' \
+        ```
+      responses:
+        "200":
+          description: "Success response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SoftskillObject"
+
+        "default":
+          description: |
+            ```
+            400 - Bad Request
+            401 - Unauthorized
+            403 - Forbidden
+            404 - Not Found
+            422 - Unprocessable Entity
+            500 - Error on server
+            ```
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    description: "error description"
+                    example: "Server Error"
+
+    delete:
+      tags:
+        - Softskill
+      summary: Delete Softskill by ID
+      security:
+        - BearerAuth: []
+      description: |
+        Delete a specific Softskill by ID
+        ```
+        curl --location --request DELETE '`${url}`/api/v1/softskill/{softskill_id}' \
+            --header 'Content-Type: application/json' \
+            --header 'Authorization: Bearer {TOKEN}' \
+        ```
+      responses:
+        "200":
+          description: Softskill successfully deleted
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Success
+
+        "default":
+          description: |
+            ```
+            400 - Bad Request
+            401 - Unauthorized
+            403 - Forbidden
+            404 - Not Found
+            422 - Unprocessable Entity
+            500 - Error on server
+            ```
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                message: Resource not exist
+    put:
+      tags:
+        - Softskill
+      summary: Edit Softskill
+      security:
+        - BearerAuth: []
+      description: |
+        Edit the details of a softskill
+        ```
+        curl --location --request PUT '`${url}`/api/v1/softskill/{softskill_id}' \
+            --header 'Content-Type: application/json' \
+            --header 'Authorization: Bearer {TOKEN}' \
+            --data-raw '{
+                "title": "Updated Title",
+                "penyelenggara": "who",
+                "deskripsi": "deskripsi",
+                "tahun_kegiatan": "2024-06-27"
+                "file": "https"
+            }'
+        ```
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SoftskillPostRequestBody"
+
+      responses:
+        "200":
+          description: "Edit softskill Success response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SoftskillObject"
+
         "default":
           description: |
             ```
@@ -1045,9 +1529,10 @@ paths:
             --header 'Authorization: Bearer {TOKEN}' \
             --data-raw '{
                 "title": "Updated Title",
-                "content": "Updated content",
-                "author": "Updated Author",
-                "date": "2024-06-27"
+                "penyelenggara": "who",
+                "deskripsi": "deskripsi",
+                "tahun_kegiatan": "2024-06-27"
+                "file": "https"
             }'
         ```
       requestBody:
@@ -1598,6 +2083,7 @@ components:
             name:
               description: user name
               type: string
+
     CoursePostRequestBody:
       type: object
       required:
@@ -1621,6 +2107,95 @@ components:
         description:
           description: course description
           type: string
+
+    InputKRSPostRequestBody:
+      type: object
+      properties:
+        course:
+          type: string
+          example: "course"
+        sks:
+          type: string
+          example: "course"
+        day:
+          type: string
+          format: date
+          example: "2024-06-26"
+        kelas:
+          type: string
+          example: "course"
+        type:
+          type: string
+          example: "course"
+        room:
+          type: string
+          example: "course"
+          
+    InputKRSObject:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "1234567890"
+        course:
+          type: string
+          example: "course"
+        sks:
+          type: string
+          example: "course"
+        day:
+          type: string
+          format: date
+          example: "2024-06-26"
+        kelas:
+          type: string
+          example: "course"
+        type:
+          type: string
+          example: "course"
+        room:
+          type: string
+          example: "course"
+
+    SoftskillPostRequestBody:
+      type: object
+      properties:
+        nim:
+          type: integer
+          example: "422023022"
+        nama:
+          type: string
+          example: "Softskill Title"
+        deskripsi:
+          type: string
+          example: "deskripsi"
+        tahun_kegiatan:
+          type: string
+          format: date
+          example: "2024-06-26"
+        file:
+          type: string
+          example: "https"
+          
+    SoftskillObject:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "1234567890"
+        title:
+          type: string
+          example: "Softskill Title"
+        deskripsi:
+          type: string
+          example: "deskripsi"
+        tahun_kegiatan:
+          type: string
+          format: date
+          example: "2024-06-26"
+        file:
+          type: string
+          example: "https"
           
     BillingPostRequestBody:
       type: object
@@ -1636,9 +2211,12 @@ components:
           example: "5000000"
         date:
           type: string
-          format: date
-          example: "2024-06-26"
-
+          format: datetime
+          example: "2024-06-27 10:00"
+        room:
+          type: string
+          example: "Room of the class"
+       
     BillingObject:
       type: object
       properties:
@@ -1740,7 +2318,7 @@ components:
         id:
           type: string
           example: "1234567890"
-        title:
+        course:
           type: string
           example: "News Title"
         content:
@@ -1842,7 +2420,6 @@ components:
         location:
           type: string
           example: "location of the CampusEvent of the class"
-          
 
   securitySchemes:
     BearerAuth:

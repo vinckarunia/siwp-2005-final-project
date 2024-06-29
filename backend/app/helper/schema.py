@@ -40,6 +40,24 @@ class CourseSchema(ma.Schema):
     description = fields.String(required=False)
     user = fields.Nested(UserSchema, required=True, dump_only=True)
 
+class InputKRSSchema(ma.Schema):
+    id = fields.String(dump_only=True)
+    course = fields.String(required=True)
+    sks = fields.String(required=True)
+    day = fields.Date(required=False)
+    kelas = fields.String(required=True)
+    type = fields.String(required=True)
+    room = fields.String(required=True)
+    user = fields.Nested(UserSchema, required=True, dump_only=True)
+
+class SoftskillSchema(ma.Schema):
+    id = fields.String(dump_only=True)
+    title = fields.String(required=True)
+    deskripsi = fields.String(required=True)
+    tahun_kegiatan = fields.Date(required=False)
+    file = fields.String(required=True)
+    user = fields.Nested(UserSchema, required=True, dump_only=True)
+
 class BillingSchema(ma.Schema):
     id = fields.String(dump_only=True)
     nim = fields.Integer(required=True)
@@ -47,7 +65,7 @@ class BillingSchema(ma.Schema):
     tagihan = fields.Integer(required=True)
     date = fields.Date(required=False)
     user = fields.Nested(UserSchema, required=True, dump_only=True)
-
+    
 class DashboardSchema(ma.Schema):
     id = fields.String(dump_only=True)
     nim = fields.Integer(required=True)

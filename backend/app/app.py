@@ -5,7 +5,7 @@ from flask import Flask, abort, current_app
 from flask_cors import CORS
 from utils import db, ma, bcrypt, jwt
 from route.user import authz_blueprint
-from route.course import course_blueprint , billing_blueprint , dashboard_blueprint, news_blueprint, exam_blueprint, campusevent_blueprint
+from route.course import course_blueprint , billing_blueprint , dashboard_blueprint, news_blueprint, exam_blueprint, campusevent_blueprint, inputkrs_blueprint, softskill_blueprint
 
 from mongoengine.errors import DoesNotExist, ValidationError, NotUniqueError
 from requests.exceptions import ConnectionError
@@ -32,6 +32,14 @@ def create_app():
     )
     app.register_blueprint(
         course_blueprint,
+        url_prefix=f"/api/{config.CURRENT_VERSION_API}/"
+    )
+    app.register_blueprint(
+        inputkrs_blueprint,
+        url_prefix=f"/api/{config.CURRENT_VERSION_API}/"
+    )
+    app.register_blueprint(
+        softskill_blueprint,
         url_prefix=f"/api/{config.CURRENT_VERSION_API}/"
     )
     app.register_blueprint(

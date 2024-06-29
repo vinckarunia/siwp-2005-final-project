@@ -1,9 +1,15 @@
 from flask import Blueprint
 from flask_restful import Api
-from resource.course import CourseAPI, CourseListAPI, BillingAPI, BillingListAPI, DashboardAPI, DashboardListAPI, NewsAPI, NewsListAPI, ExamAPI, ExamListAPI, CampusEventAPI, CampusEventListAPI
+from resource.course import CourseAPI, CourseListAPI, BillingAPI, BillingListAPI, DashboardAPI, DashboardListAPI, NewsAPI, NewsListAPI, ExamAPI, ExamListAPI, CampusEventAPI, CampusEventListAPI, InputKRSAPI, InputKRSListAPI, SoftskillAPI, SoftskillListAPI
 
 course_blueprint = Blueprint("course_api", __name__)
 course_blueprint_api = Api(course_blueprint)
+
+inputkrs_blueprint = Blueprint("inputkrs_api", __name__)
+inputkrs_blueprint_api = Api(inputkrs_blueprint)
+
+softskill_blueprint = Blueprint("softskill_api", __name__)
+softskill_blueprint_api = Api(softskill_blueprint)
 
 billing_blueprint = Blueprint("billing_api", __name__)
 billing_blueprint_api = Api(billing_blueprint)
@@ -26,6 +32,22 @@ course_blueprint_api.add_resource(
 )
 course_blueprint_api.add_resource(
     CourseListAPI, "/courses"
+)
+
+inputkrs_blueprint_api.add_resource(
+    InputKRSListAPI, "/inputkrs"
+)
+
+inputkrs_blueprint_api.add_resource(
+    InputKRSAPI, "/inputkrs/<string:inputkrs_id>"
+)
+
+softskill_blueprint_api.add_resource(
+    SoftskillListAPI, "/softskill"
+)
+
+softskill_blueprint_api.add_resource(
+    SoftskillAPI, "/softskill/<string:softskill_id>"
 )
 
 billing_blueprint_api.add_resource(

@@ -7,8 +7,8 @@ from mongoengine.errors import NotUniqueError
 from werkzeug.exceptions import UnprocessableEntity, Conflict
 
 import helper.validator as validator
-from model.course import Course, User, Billing, Dashboard, News, Exam, CampusEvent
-from helper.schema import CourseSchema, BillingSchema, DashboardSchema, NewsSchema, ExamSchema, CampusEventSchema
+from model.course import Course, User, Billing, Dashboard, News, Exam, CampusEvent, InputKRS, Softskill
+from helper.schema import CourseSchema, BillingSchema, DashboardSchema, NewsSchema, ExamSchema, CampusEventSchema, InputKRSSchema, SoftskillSchema
 
 class CourseListAPI(Resource):
     @jwt_required()
@@ -49,6 +49,90 @@ class CourseAPI(Resource):
         course.delete()
         app.logger.info("Course with id %s deleted", course_id)
         msg={"message": "Course: {} deleted".format(course_id)}
+        return msg, 200
+    
+class InputKRSListAPI(Resource):
+    @jwt_required()
+    def get(self):
+        inputkrs = InputKRS.objects()
+        serialized_payload = InputKRSSchema(many=True).dump(inputkrs)
+        return serialized_payload, 200
+    
+    @jwt_required()
+    def post(self):
+        serialized_payload = validator.add_inputkrs()
+        inputkrs = InputKRS(**serialized_payload)
+        inputkrs.save()
+        serialized_payload = InputKRSSchema().dump(inputkrs)
+        return serialized_payload, 200
+
+class InputKRSAPI(Resource):
+    @jwt_required()
+    def get(self, inputkrs_id):
+        app.logger.info("inputkrs id: {}".format(inputkrs_id))
+        inputkrs = InputKRS.objects.get(id=inputkrs_id)
+        serialized_payload = InputKRSSchema().dump(inputkrs)
+        return serialized_payload, 200
+    
+    @jwt_required()
+    def put(self, inputkrs_id):
+        inputkrs = InputKRS.objects.get(id=inputkrs_id)
+        user = User.objects.get(id=get_jwt_identity())
+        serialized_payload = validator.add_inputkrs()
+        for key, value in serialized_payload.items():
+            setattr(inputkrs, key, value)
+        inputkrs.save()
+        serialized_payload = InputKRSSchema().dump(inputkrs)
+        return serialized_payload, 200
+    
+    @jwt_required()
+    def delete(self, inputkrs_id):        
+        inputkrs = InputKRS.objects.get(id=inputkrs_id)
+        inputkrs.delete()
+        app.logger.info("InputKRS with id %s deleted", inputkrs_id)
+        msg={"message": "InputKRS: {} deleted".format(inputkrs_id)}
+        return msg, 200
+    
+class SoftskillListAPI(Resource):
+    @jwt_required()
+    def get(self):
+        softskill = Softskill.objects()
+        serialized_payload = SoftskillSchema(many=True).dump(softskill)
+        return serialized_payload, 200
+    
+    @jwt_required()
+    def post(self):
+        serialized_payload = validator.add_softskill()
+        softskill = Softskill(**serialized_payload)
+        softskill.save()
+        serialized_payload = SoftskillSchema().dump(softskill)
+        return serialized_payload, 200
+
+class SoftskillAPI(Resource):
+    @jwt_required()
+    def get(self, softskill_id):
+        app.logger.info("softskill id: {}".format(softskill_id))
+        softskill = Softskill.objects.get(id=softskill_id)
+        serialized_payload = SoftskillSchema().dump(softskill)
+        return serialized_payload, 200
+    
+    @jwt_required()
+    def put(self, softskill_id):
+        softskill = Softskill.objects.get(id=softskill_id)
+        user = User.objects.get(id=get_jwt_identity())
+        serialized_payload = validator.add_softskill()
+        for key, value in serialized_payload.items():
+            setattr(softskill, key, value)
+        softskill.save()
+        serialized_payload = SoftskillSchema().dump(softskill)
+        return serialized_payload, 200
+    
+    @jwt_required()
+    def delete(self, softskill_id):        
+        softskill = Softskill.objects.get(id=softskill_id)
+        softskill.delete()
+        app.logger.info("Softskill with id %s deleted", softskill_id)
+        msg={"message": "Softskill: {} deleted".format(softskill_id)}
         return msg, 200
     
 class BillingListAPI(Resource):

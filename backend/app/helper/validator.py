@@ -22,6 +22,30 @@ def add_course() -> dict:
         abort(400, {'error': 'Request is missing required fields'})
     except NotUniqueError:
         abort(400, {'error': 'kode_mk already exists, please try another kode_mk'})
+
+def add_inputkrs() -> dict:
+    '''
+    validation for inputkrs seriliarized
+    '''
+    try:
+        serialized_payload = schema.InputKRSSchema().load(request.get_json())
+        return serialized_payload
+    except ValidationError as e:
+        abort(400, {'errors': e.messages})
+    except FieldDoesNotExist:
+        abort(400, {'error': 'Request is missing required fields'})
+  
+def add_softskill() -> dict:
+    '''
+    validation for softskill seriliarized
+    '''
+    try:
+        serialized_payload = schema.SoftskillSchema().load(request.get_json())
+        return serialized_payload
+    except ValidationError as e:
+        abort(400, {'errors': e.messages})
+    except FieldDoesNotExist:
+        abort(400, {'error': 'Request is missing required fields'})
        
 def add_billing() -> dict:
     '''
