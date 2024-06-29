@@ -74,7 +74,7 @@ profile_blueprint_api.add_resource(
     ProfileListAPI, "/profile"
 )
 
-guidance_blueprint_api.add_resource(
+profile_blueprint_api.add_resource(
     ProfileAPI, "/profile/<string:profile_id>"
 )
 inputkrs_blueprint_api.add_resource(
@@ -100,6 +100,7 @@ billing_blueprint_api.add_resource(
 billing_blueprint_api.add_resource(
     BillingAPI, "/billings/<string:billing_id>"
 )
+
 dashboard_blueprint_api.add_resource(
     DashboardListAPI, "/dashboard"
 )

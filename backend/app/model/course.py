@@ -20,7 +20,7 @@ class Bulletin(db.Document):
 class InputKRS(db.Document):
     user = db.ReferenceField(User)
     course = db.StringField(required=True)
-    sks = db.StringField(required=True)
+    sks = db.IntField(required=True)
     day = db.DateField(required=False)
     kelas = db.StringField(required=True)
     type = db.StringField(required=True)
@@ -29,6 +29,7 @@ class InputKRS(db.Document):
 class Softskill(db.Document):
     user = db.ReferenceField(User)
     title = db.StringField(required=True)
+    penyelenggara = db.StringField(required=True)
     deskripsi = db.StringField(required=True)
     tahun_kegiatan = db.DateField(required=False)
     file = db.StringField(required=True)
@@ -80,7 +81,7 @@ class Profile(db.Document):
     religion = db.StringField(required=True)
     address = db.StringField(required=True)
     email = db.StringField(required=True)
-    phone = db.IntField(required=True)
+    phone = db.StringField(required=True)
  
 class Exam(db.Document):
     user = db.ReferenceField(User)

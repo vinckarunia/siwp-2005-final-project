@@ -61,6 +61,7 @@ class InputKRSSchema(ma.Schema):
 class SoftskillSchema(ma.Schema):
     id = fields.String(dump_only=True)
     title = fields.String(required=True)
+    penyelenggara = fields.String(required=True)
     deskripsi = fields.String(required=True)
     tahun_kegiatan = fields.Date(required=False)
     file = fields.String(required=True)
@@ -118,7 +119,8 @@ class ProfileSchema(ma.Schema):
     religion = fields.String(required=True)
     address = fields.String(required=True)
     email = fields.String(required=True)
-    phone = fields.Integer(required=True)
+    phone = fields.String(required=True)
+
 class ExamSchema(ma.Schema):
     id = fields.String(dump_only=True)
     kode_mk = fields.String(required=True)
