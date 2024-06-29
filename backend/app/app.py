@@ -5,9 +5,7 @@ from flask import Flask, abort, current_app
 from flask_cors import CORS
 from utils import db, ma, bcrypt, jwt
 from route.user import authz_blueprint
-from route.course import course_blueprint, bulletin_blueprint, classes_blueprint, guidance_blueprint, profile_blueprint
-# TODO: add any route here
-# from route.anything import anything_blueprint ##here
+from route.course import course_blueprint, bulletin_blueprint, billing_blueprint, dashboard_blueprint, news_blueprint, exam_blueprint, campusevent_blueprint, inputkrs_blueprint, softskill_blueprint, classes_blueprint, guidance_blueprint, profile_blueprint
 
 from mongoengine.errors import DoesNotExist, ValidationError, NotUniqueError
 from requests.exceptions import ConnectionError
@@ -52,7 +50,34 @@ def create_app():
         profile_blueprint,
         url_prefix=f"/api/{config.CURRENT_VERSION_API}/"
     )
-
+    app.register_blueprint(
+        inputkrs_blueprint,
+        url_prefix=f"/api/{config.CURRENT_VERSION_API}/"
+    )
+    app.register_blueprint(
+        softskill_blueprint,
+        url_prefix=f"/api/{config.CURRENT_VERSION_API}/"
+    )
+    app.register_blueprint(
+        billing_blueprint,
+        url_prefix=f"/api/{config.CURRENT_VERSION_API}/"
+    )
+    app.register_blueprint(
+        dashboard_blueprint,
+        url_prefix=f"/api/{config.CURRENT_VERSION_API}/"
+    )
+    app.register_blueprint(
+        news_blueprint,
+        url_prefix=f"/api/{config.CURRENT_VERSION_API}/"
+    )
+    app.register_blueprint(
+        exam_blueprint,
+        url_prefix=f"/api/{config.CURRENT_VERSION_API}/"
+    )
+    app.register_blueprint(
+        campusevent_blueprint,
+        url_prefix=f"/api/{config.CURRENT_VERSION_API}/"
+    )
 
     @app.errorhandler(DoesNotExist)
     def handle_not_exist_record(e):
@@ -78,6 +103,3 @@ def create_app():
 if __name__ == "__main__":
     app = create_app()
     app.run(host=config.HOST, port=config.PORT)
-
-
-
