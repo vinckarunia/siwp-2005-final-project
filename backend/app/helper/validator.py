@@ -35,15 +35,50 @@ def add_billing() -> dict:
     except FieldDoesNotExist:
         abort(400, {'error': 'Request is missing required fields'})
 
-
 def add_dashboard() -> dict:
     '''
     Validation for dashboard serialized
     '''
     try:
         serialized_payload = schema.DashboardSchema().load(request.get_json())
+    except ValidationError as e:
+        abort(400, {'errors': e.messages})
+    except FieldDoesNotExist:
+        abort(400, {'error': 'Request is missing required fields'})
+
+def add_news() -> dict:
+    '''
+    validation for news seriliarized
+    '''
+    try:
+        serialized_payload = schema.NewsSchema().load(request.get_json())
         return serialized_payload
     except ValidationError as e:
         abort(400, {'errors': e.messages})
     except FieldDoesNotExist:
         abort(400, {'error': 'Request is missing required fields'})
+
+def add_exam() -> dict:
+    '''
+    validation for exam seriliarized
+    '''
+    try:
+        serialized_payload = schema.ExamSchema().load(request.get_json())
+        return serialized_payload
+    except ValidationError as e:
+        abort(400, {'errors': e.messages})
+    except FieldDoesNotExist:
+        abort(400, {'error': 'Request is missing required fields'})
+
+def add_campusevent() -> dict:
+    '''
+    validation for campusevent seriliarized
+    '''
+    try:
+        serialized_payload = schema.CampusEventSchema().load(request.get_json())
+        return serialized_payload
+    except ValidationError as e:
+        abort(400, {'errors': e.messages})
+    except FieldDoesNotExist:
+        abort(400, {'error': 'Request is missing required fields'})
+  

@@ -29,6 +29,8 @@ tags:
     description: Endpoint for managing billings
   - name: Dashboard
     description: Endpoint for managing dashboard
+  - name: News
+    description: Endpoint for managing news
 
 paths:
   /user:
@@ -709,8 +711,6 @@ paths:
                     description: "error description"
                     example: "Server Error"
 
-
-
   /dashboard/{dashboard_id}:
     parameters:
       - name: dashboard_id
@@ -848,6 +848,718 @@ paths:
                     description: "error description"
                     example: "Server Error"
 
+  /news:
+    post:
+      tags:
+        - News
+      summary: Add News
+      security:
+        - BearerAuth: []
+      description: |
+        Create a new news
+        ```
+        curl --location --request POST '`${url}`/api/v1/news' \
+            --header 'Content-Type: application/json' \
+            --header 'Authorization: Bearer {TOKEN}' \
+            --data-raw '{
+                "title": "NewsTitle",
+                "content": "Content of the news"
+            }'
+        ```
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NewsPostRequestBody"
+
+      responses:
+        "200":
+          description: "Success response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NewsObject"
+
+        "default":
+          description: |
+            ```
+            400 - Bad Request
+            401 - Unauthorized
+            403 - Forbidden
+            404 - Not Found
+            422 - Unprocessable Entity
+            500 - Error on server
+            ```
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    description: "error description"
+                    example: "Server Error"
+    get:
+      tags:
+        - News
+      summary: Get All News
+      security:
+        - BearerAuth: []
+      description: |
+        Get all news
+        ```
+        curl --location --request GET '`${url}`/api/v1/news' \
+            --header 'Content-Type: application/json' \
+            --header 'Authorization: Bearer {TOKEN}' \
+        ```
+      responses:
+        "200":
+          description: "Success response"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/NewsObject"
+        "default":
+          description: |
+            ```
+            400 - Bad Request
+            401 - Unauthorized
+            403 - Forbidden
+            404 - Not Found
+            422 - Unprocessable Entity
+            500 - Error on server
+            ```
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    description: "error description"
+                    example: "Server Error"
+
+  /news/{news_id}:
+    parameters:
+      - name: news_id
+        in: path
+        required: true
+        schema:
+          type: string
+
+    get:
+      tags:
+        - News
+      summary: Get News by ID
+      security:
+        - BearerAuth: []
+      description: |
+        Get a specific news by ID
+        ```
+        curl --location --request GET '`${url}`/api/v1/news/{news_id}' \
+            --header 'Content-Type: application/json' \
+            --header 'Authorization: Bearer {TOKEN}' \
+        ```
+      responses:
+        "200":
+          description: "Success response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NewsObject"
+
+        "default":
+          description: |
+            ```
+            400 - Bad Request
+            401 - Unauthorized
+            403 - Forbidden
+            404 - Not Found
+            422 - Unprocessable Entity
+            500 - Error on server
+            ```
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    description: "error description"
+                    example: "Server Error"
+
+    delete:
+      tags:
+        - News
+      summary: Delete News by ID
+      security:
+        - BearerAuth: []
+      description: |
+        Delete a specific news by ID
+        ```
+        curl --location --request DELETE '`${url}`/api/v1/news/{news_id}' \
+            --header 'Content-Type: application/json' \
+            --header 'Authorization: Bearer {TOKEN}' \
+        ```
+      responses:
+        "200":
+          description: News successfully deleted
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Success
+
+        "default":
+          description: |
+            ```
+            400 - Bad Request
+            401 - Unauthorized
+            403 - Forbidden
+            404 - Not Found
+            422 - Unprocessable Entity
+            500 - Error on server
+            ```
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                message: Resource not exist
+    put:
+      tags:
+        - News
+      summary: Edit News
+      security:
+        - BearerAuth: []
+      description: |
+        Edit the details of a news
+        ```
+        curl --location --request PUT '`${url}`/api/v1/news/{news_id}' \
+            --header 'Content-Type: application/json' \
+            --header 'Authorization: Bearer {TOKEN}' \
+            --data-raw '{
+                "title": "Updated Title",
+                "content": "Updated content",
+                "author": "Updated Author",
+                "date": "2024-06-27"
+            }'
+        ```
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NewsPostRequestBody"
+
+      responses:
+        "200":
+          description: "Edit News Success response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NewsObject"
+
+        "default":
+          description: |
+            ```
+            400 - Bad Request
+            401 - Unauthorized
+            403 - Forbidden
+            404 - Not Found
+            422 - Unprocessable Entity
+            500 - Error on server
+            ```
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    description: "error description"
+                    example: "Server Error"
+  /exam:
+    post:
+      tags:
+        - Exam
+      summary: Add Exam
+      security:
+        - BearerAuth: []
+      description: |
+        Create a new exam
+        ```
+        curl --location --request POST '`${url}`/api/v1/exam' \
+            --header 'Content-Type: application/json' \
+            --header 'Authorization: Bearer {TOKEN}' \
+            --data-raw '{
+                "Kode_mk": "Exam Title",
+                "course": "Course of the exam",
+                "date": "2024-06-27",
+                "room": "room number"
+ 
+            }'
+        ```
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ExamPostRequestBody"
+
+      responses:
+        "200":
+          description: "Success response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExamObject"
+
+        "default":
+          description: |
+            ```
+            400 - Bad Request
+            401 - Unauthorized
+            403 - Forbidden
+            404 - Not Found
+            422 - Unprocessable Entity
+            500 - Error on server
+            ```
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    description: "error description"
+                    example: "Server Error"
+    get:
+      tags:
+        - Exam
+      summary: Get All Exam
+      security:
+        - BearerAuth: []
+      description: |
+        Get all exam
+        ```
+        curl --location --request GET '`${url}`/api/v1/exam' \
+            --header 'Content-Type: application/json' \
+            --header 'Authorization: Bearer {TOKEN}' \
+        ```
+      responses:
+        "200":
+          description: "Success response"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/ExamObject"
+        "default":
+          description: |
+            ```
+            400 - Bad Request
+            401 - Unauthorized
+            403 - Forbidden
+            404 - Not Found
+            422 - Unprocessable Entity
+            500 - Error on server
+            ```
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    description: "error description"
+                    example: "Server Error"
+
+  /exam/{exam_id}:
+    parameters:
+      - name: exam_id
+        in: path
+        required: true
+        schema:
+          type: string
+
+    get:
+      tags:
+        - Exam
+      summary: Get Exam by ID
+      security:
+        - BearerAuth: []
+      description: |
+        Get a specific exam by ID
+        ```
+        curl --location --request GET '`${url}`/api/v1/exam/{exam_id}' \
+            --header 'Content-Type: application/json' \
+            --header 'Authorization: Bearer {TOKEN}' \
+        ```
+      responses:
+        "200":
+          description: "Success response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExamObject"
+
+        "default":
+          description: |
+            ```
+            400 - Bad Request
+            401 - Unauthorized
+            403 - Forbidden
+            404 - Not Found
+            422 - Unprocessable Entity
+            500 - Error on server
+            ```
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    description: "error description"
+                    example: "Server Error"
+
+    delete:
+      tags:
+        - Exam
+      summary: Delete Exam by ID
+      security:
+        - BearerAuth: []
+      description: |
+        Delete a specific exam by ID
+        ```
+        curl --location --request DELETE '`${url}`/api/v1/exam/{exam_id}' \
+            --header 'Content-Type: application/json' \
+            --header 'Authorization: Bearer {TOKEN}' \
+        ```
+      responses:
+        "200":
+          description: Exam successfully deleted
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Success
+
+        "default":
+          description: |
+            ```
+            400 - Bad Request
+            401 - Unauthorized
+            403 - Forbidden
+            404 - Not Found
+            422 - Unprocessable Entity
+            500 - Error on server
+            ```
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                message: Resource not exist
+    put:
+      tags:
+        - Exam
+      summary: Edit Exam
+      security:
+        - BearerAuth: []
+      description: |
+        Edit the details of a exam
+        ```
+        curl --location --request PUT '`${url}`/api/v1/exam/{exam_id}' \
+            --header 'Content-Type: application/json' \
+            --header 'Authorization: Bearer {TOKEN}' \
+            --data-raw '{
+                "Kode_mk": "Exam Title",
+                "course": "Course of the exam",
+                "date": "2024-06-27",
+                "room": "room number"
+            }'
+        ```
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ExamPostRequestBody"
+
+      responses:
+        "200":
+          description: "Edit Exam Success response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExamObject"
+
+        "default":
+          description: |
+            ```
+            400 - Bad Request
+            401 - Unauthorized
+            403 - Forbidden
+            404 - Not Found
+            422 - Unprocessable Entity
+            500 - Error on server
+            ```
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    description: "error description"
+                    example: "Server Error"
+  /campusevent:
+    post:
+      tags:
+        - CampusEvent
+      summary: Add CampusEvent
+      security:
+        - BearerAuth: []
+      description: |
+        Create a new campusevent
+        ```
+        curl --location --request POST '`${url}`/api/v1/campusevent' \
+            --header 'Content-Type: application/json' \
+            --header 'Authorization: Bearer {TOKEN}' \
+            --data-raw '{
+                "title": "CampusEvent Title",
+                "date": "2024-06-27",
+                "time": "time of  the campusevent",
+                "location": "location"
+ 
+            }'
+        ```
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CampusEventPostRequestBody"
+
+      responses:
+        "200":
+          description: "Success response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CampusEventObject"
+
+        "default":
+          description: |
+            ```
+            400 - Bad Request
+            401 - Unauthorized
+            403 - Forbidden
+            404 - Not Found
+            422 - Unprocessable Entity
+            500 - Error on server
+            ```
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    description: "error description"
+                    example: "Server Error"
+    get:
+      tags:
+        - CampusEvent
+      summary: Get All CampusEvent
+      security:
+        - BearerAuth: []
+      description: |
+        Get all campusevent
+        ```
+        curl --location --request GET '`${url}`/api/v1/campusevent' \
+            --header 'Content-Type: application/json' \
+            --header 'Authorization: Bearer {TOKEN}' \
+        ```
+      responses:
+        "200":
+          description: "Success response"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/CampusEventObject"
+        "default":
+          description: |
+            ```
+            400 - Bad Request
+            401 - Unauthorized
+            403 - Forbidden
+            404 - Not Found
+            422 - Unprocessable Entity
+            500 - Error on server
+            ```
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    description: "error description"
+                    example: "Server Error"
+
+  /campusevent/{campusevent_id}:
+    parameters:
+      - name: campusevent_id
+        in: path
+        required: true
+        schema:
+          type: string
+
+    get:
+      tags:
+        - CampusEvent
+      summary: Get CampusEvent by ID
+      security:
+        - BearerAuth: []
+      description: |
+        Get a specific campusevent by ID
+        ```
+        curl --location --request GET '`${url}`/api/v1/campusevent/{campusevent_id}' \
+            --header 'Content-Type: application/json' \
+            --header 'Authorization: Bearer {TOKEN}' \
+        ```
+      responses:
+        "200":
+          description: "Success response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CampusEventObject"
+
+        "default":
+          description: |
+            ```
+            400 - Bad Request
+            401 - Unauthorized
+            403 - Forbidden
+            404 - Not Found
+            422 - Unprocessable Entity
+            500 - Error on server
+            ```
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    description: "error description"
+                    example: "Server Error"
+
+    delete:
+      tags:
+        - CampusEvent
+      summary: Delete CampusEvent by ID
+      security:
+        - BearerAuth: []
+      description: |
+        Delete a specific campusevent by ID
+        ```
+        curl --location --request DELETE '`${url}`/api/v1/campusevent/{campusevent_id}' \
+            --header 'Content-Type: application/json' \
+            --header 'Authorization: Bearer {TOKEN}' \
+        ```
+      responses:
+        "200":
+          description: CampusEvent successfully deleted
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Success
+
+        "default":
+          description: |
+            ```
+            400 - Bad Request
+            401 - Unauthorized
+            403 - Forbidden
+            404 - Not Found
+            422 - Unprocessable Entity
+            500 - Error on server
+            ```
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                message: Resource not exist
+    put:
+      tags:
+        - CampusEvent
+      summary: Edit CampusEvent
+      security:
+        - BearerAuth: []
+      description: |
+        Edit the details of a campusevent
+        ```
+        curl --location --request PUT '`${url}`/api/v1/campusevent/{campusevent_id}' \
+            --header 'Content-Type: application/json' \
+            --header 'Authorization: Bearer {TOKEN}' \
+            --data-raw '{
+                "title": "CampusEvent Title",
+                "date": "2024-06-27",
+                "time": "time of  the campusevent",
+                "location": "location"
+            }'
+        ```
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CampusEventPostRequestBody"
+
+      responses:
+        "200":
+          description: "Edit CampusEvent Success response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CampusEventObject"
+
+        "default":
+          description: |
+            ```
+            400 - Bad Request
+            401 - Unauthorized
+            403 - Forbidden
+            404 - Not Found
+            422 - Unprocessable Entity
+            500 - Error on server
+            ```
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    description: "error description"
+                    example: "Server Error"
+ 
 components:
   schemas:
     CourseObject:
@@ -886,7 +1598,6 @@ components:
             name:
               description: user name
               type: string
-
     CoursePostRequestBody:
       type: object
       required:
@@ -1012,6 +1723,126 @@ components:
           format: date
           example: "2024-06-26"
           description:  schedule
+          
+    NewsPostRequestBody:
+      type: object
+      properties:
+        title:
+          type: string
+          example: "News Title"
+        content:
+          type: string
+          example: "Content of the news"
+     
+    NewsObject:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "1234567890"
+        title:
+          type: string
+          example: "News Title"
+        content:
+          type: string
+          example: "Content of the news"
+
+    ExamPostRequestBody:
+      type: object
+      required:
+        - kode_mk
+        - course
+        - date
+        - room
+       
+      properties:
+        kode_mk:
+          type: string
+          example: "Class code"
+        course:
+          type: string
+          example: "Course of the class"
+        date:
+          type: string
+          format: datetime
+          example: "2024-06-27 10:00"
+        room:
+          type: string
+          example: "Room of the class"
+       
+    ExamObject:
+      type: object
+      required:
+        - kode_mk
+        - course
+        - date
+        - room
+      properties:
+        id:
+          type: string
+          example: "1234567890"
+        kode_mk:
+          type: string
+          example: "Class code"
+        course:
+          type: string
+          example: "Course of the class"
+        date:
+          type: string
+          format: datetime
+          example: "2024-06-27 10:00"
+        room:
+          type: string
+          example: "Room of the class"
+
+    CampusEventPostRequestBody:
+      type: object
+      required:
+        - title
+        - date
+        - time
+        - location
+       
+      properties:
+        title:
+          type: string
+          example: "CampusEvent code"
+        date:
+          type: string
+          format: datetime
+          example: "2024-06-27 10:00"
+        time:
+          type: string
+          example: "CampusEvent time"
+        location:
+          type: string
+          example: "location of the CampusEvent"
+
+    CampusEventObject:
+      type: object
+      required:
+        - title
+        - date
+        - time
+        - location
+      properties:
+        id:
+          type: string
+          example: "1234567890"
+        title:
+          type: string
+          example: "CampusEvent code"
+        date:
+          type: string
+          format: datetime
+          example: "2024-06-27 10:00"
+        time:
+          type: string
+          example: "CampusEvent time"
+        location:
+          type: string
+          example: "location of the CampusEvent of the class"
+          
 
   securitySchemes:
     BearerAuth:

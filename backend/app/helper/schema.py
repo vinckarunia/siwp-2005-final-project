@@ -31,7 +31,6 @@ class RegisterSchema(ma.Schema):
     userlevel = fields.Integer(default=0)
     description = fields.String()
 
-
 class CourseSchema(ma.Schema):
     id = fields.String(dump_only=True)
     kode_mk = fields.String(required=True)
@@ -40,9 +39,6 @@ class CourseSchema(ma.Schema):
     sks = fields.Integer(required=False)
     description = fields.String(required=False)
     user = fields.Nested(UserSchema, required=True, dump_only=True)
-    
-
-#TODO: add any schema here
 
 class BillingSchema(ma.Schema):
     id = fields.String(dump_only=True)
@@ -51,7 +47,6 @@ class BillingSchema(ma.Schema):
     tagihan = fields.Integer(required=True)
     date = fields.Date(required=False)
     user = fields.Nested(UserSchema, required=True, dump_only=True)
-
 
 class DashboardSchema(ma.Schema):
     id = fields.String(dump_only=True)
@@ -62,6 +57,24 @@ class DashboardSchema(ma.Schema):
     schedule = fields.Date(required=True)
     user = fields.Nested(UserSchema, required=True, dump_only=True)
 
-    # course = fields.Nested(Course, dump_only=True)
+class NewsSchema(ma.Schema):
+    id = fields.String(dump_only=True)
+    title = fields.String(required=True)
+    content = fields.String(required=False)
+    user = fields.Nested(UserSchema, required=True, dump_only=True)
 
+class ExamSchema(ma.Schema):
+    id = fields.String(dump_only=True)
+    kode_mk = fields.String(required=True)
+    course = fields.String(required=True)
+    date = fields.DateTime(required=True)
+    room = fields.String(required=False)
+    user = fields.Nested(UserSchema, required=True, dump_only=True)
 
+class CampusEventSchema(ma.Schema):
+    id = fields.String(dump_only=True)
+    title = fields.String(required=True)
+    date = fields.String(required=True)
+    time = fields.String(required=True)
+    location = fields.String(required=True)
+    user = fields.Nested(UserSchema, required=True, dump_only=True)
